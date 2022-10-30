@@ -1,0 +1,23 @@
+services:
+  db-dev:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: tobechanged
+    volumes:
+      - data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    profiles:
+      - dev
+
+  db-prod:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD_FILE: password_file_path
+    volumes:
+      - data:/var/lib/postgresql/data
+    profiles:
+      - prod
+
+volumes:
+  data:

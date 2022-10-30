@@ -1,0 +1,42 @@
+syntax = "v1"
+
+info(
+	title: "Welsh Academy API"
+	desc: "type desc here"
+	author: "Rémy EVEN"
+	email: "evenremy@gmail.com"
+	version: "0.1"
+)
+
+type request {
+	// TODO: add members here and delete this comment
+}
+
+type response {
+	// TODO: add members here and delete this comment
+}
+
+type (
+	AllIngredentsReply {
+		IngredientList []IngrediendReply `json:"ingredientList"`
+	}
+)
+
+type (
+	AddIngredientReq {
+		Name string `json:"name"`
+	}
+
+	IngrediendReply {
+		Id   int64  `json:"id"`
+		Name string `json:"name"`
+	}
+)
+
+service welsh-academy-api {
+	@handler allingredients
+	get /ingredients returns (AllIngredentsReply)
+	
+	@handler addIngredients
+	post /ingredient (AddIngredientReq) returns (IngrediendReply)
+}
