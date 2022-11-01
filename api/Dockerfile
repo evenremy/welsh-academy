@@ -1,6 +1,6 @@
 FROM scratch
 
-COPY ["api", "/"]
+ADD ["api", "/"]
 COPY ["etc", "/etc/"]
 EXPOSE 8888/tcp
 RUN ["/api"]
