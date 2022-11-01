@@ -33,7 +33,10 @@ jobs:
         go-version: 1.19
 
     - name: Build
-      run: cd api ; go build -v 
+      run: cd api ; go build -v
+    
+    - name: Adding exec Permission
+      run: chmod +x api/api
 
     - name: Test
       run: cd api ; go test -v
