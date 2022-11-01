@@ -35,10 +35,10 @@ jobs:
         cache-dependency-path: api/go.sum
 
     - name: Build
-      run: cd api ; go build -v
+      run: cd api ; GOOS=linux GOARCH=aamd64 go build -v
 
     - name: Test
-      run: cd api ; go test -v
+      run: cd api ; GOOS=linux GOARCH=aamd64 go test -v
     
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.1
