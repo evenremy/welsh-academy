@@ -34,12 +34,6 @@ jobs:
 
     - name: Build
       run: cd api ; go build -v
-    
-    - name: Adding exec Permission
-      run: chmod +x api/api
-      
-    - name: temp
-      run: ls -l api/api
 
     - name: Test
       run: cd api ; go test -v
@@ -100,9 +94,9 @@ jobs:
         with:
           name: build
           path: api/
-      
-      - name: temp
-        run: ls -l api/api
+    
+      - name: Adding exec Permission
+        run: chmod +x api/api
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
