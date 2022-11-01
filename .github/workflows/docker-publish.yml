@@ -90,6 +90,9 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      
+      - name: temp ls
+        run: ls api/
           
       - name: Download a Build Artifact
         uses: actions/download-artifact@v3.0.1
