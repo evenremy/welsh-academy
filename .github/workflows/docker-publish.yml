@@ -21,7 +21,30 @@ env:
 
 
 jobs:
+
   build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
+
+    - name: Build
+      run: cd api ; go build -v 
+
+    - name: Test
+      run: cd api ; go test -v
+    
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: build
+        path: api/api
+
+  publish:
 
     runs-on: ubuntu-latest
     permissions:
