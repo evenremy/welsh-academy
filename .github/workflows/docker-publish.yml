@@ -102,6 +102,9 @@ jobs:
     
       - name: Adding exec Permission
         run: chmod +x api/api
+        
+      - name: temp ls
+        run: ls -l ; ls -l api/
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
