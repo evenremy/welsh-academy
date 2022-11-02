@@ -2,22 +2,14 @@ syntax = "v1"
 
 info(
 	title: "Welsh Academy API"
-	desc: "type desc here"
+	desc: "A backend API for cheddar experts"
 	author: "Rémy EVEN"
 	email: "evenremy@gmail.com"
-	version: "0.1"
+	version: "v0.0.1"
 )
 
-type request {
-	// TODO: add members here and delete this comment
-}
-
-type response {
-	// TODO: add members here and delete this comment
-}
-
 type (
-	AllIngredentsReply {
+	AllIngredientsReply {
 		IngredientList []IngrediendReply `json:"ingredientList"`
 	}
 )
@@ -34,9 +26,9 @@ type (
 )
 
 service welsh-academy-api {
-	@handler allingredients
-	get /ingredients returns (AllIngredentsReply)
+	@handler AllIngredients
+	get /ingredients returns (AllIngredientsReply) // TODO require regeneration of the service
 	
-	@handler addIngredients
+	@handler AddIngredients // TODO require regeneration of the service
 	post /ingredient (AddIngredientReq) returns (IngrediendReply)
 }
