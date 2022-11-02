@@ -1,6 +1,7 @@
 FROM scratch
 
 ADD ["api", "/api.bin"]
-COPY ["etc", "/etc/"]
+ADD ["sql", "/sql/"]
+ADD ["etc", "/etc/"]
 EXPOSE 8888/tcp
-ENTRYPOINT ["./api.bin"]
+ENTRYPOINT ["/api.bin"]
