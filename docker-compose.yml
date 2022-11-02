@@ -19,5 +19,10 @@ services:
     profiles:
       - prod
 
+  api:
+    image: ghcr.io/evenremy/welsh-academy:main
+    ports:
+      - 80:8888
+
 volumes:
   data:
