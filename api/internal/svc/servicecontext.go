@@ -14,6 +14,7 @@ type ServiceContext struct {
 func NewServiceContext(c config.Config) *ServiceContext {
 
 	conn := postgres.New(c.Postgre.Datasource)
+	// TODO : init db schema
 
 	return &ServiceContext{
 		Config:          c,
