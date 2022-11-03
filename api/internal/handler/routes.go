@@ -15,12 +15,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodGet,
 				Path:    "/ingredients",
-				Handler: allingredientsHandler(serverCtx),
+				Handler: AllIngredientsHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/ingredient",
-				Handler: addIngredientsHandler(serverCtx),
+				Handler: AddIngredientsHandler(serverCtx),
 			},
 		},
 	)

@@ -23,7 +23,7 @@ func NewAllingredientsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Al
 	}
 }
 
-func (l *AllingredientsLogic) Allingredients() (resp *types.AllIngredentsReply, err error) {
+func (l *AllingredientsLogic) Allingredients() (resp *types.AllIngredientsReply, err error) {
 	// todo: add your logic here and delete this line
 
 	return
