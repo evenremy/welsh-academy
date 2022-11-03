@@ -3,6 +3,7 @@ module api
 go 1.19
 
 require (
+	github.com/go-faker/faker/v4 v4.0.0-beta.3
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/lib/pq v1.10.7
 	github.com/zeromicro/go-zero v1.4.2
