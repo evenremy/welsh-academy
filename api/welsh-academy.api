@@ -8,12 +8,14 @@ info(
 	version: "v0.0.1"
 )
 
+// types for AllIngredients
 type (
 	AllIngredientsReply {
 		IngredientList []IngrediendReply `json:"ingredientList"`
 	}
 )
 
+// types for AddIngredient
 type (
 	AddIngredientReq {
 		Name string `json:"name"`
@@ -25,86 +27,88 @@ type (
 	}
 )
 
+// types for GetAllRecipes
 type (
 	Recipe {
-		Id int64 `json:"id"`
-		title	string `json:"title"`
-		Description string `json:"description"`
-        IngredientList []IngredientWithQuantity `json:"ingredientList"`
-        StageList []Stage `json:"stageList"`
+		Id             int64                    `json:"id"`
+		Title          string                   `json:"title"`
+		Description    string                   `json:"description"`
+		IngredientList []IngredientWithQuantity `json:"ingredientList"`
+		StageList      []Stage                  `json:"stageList"`
 	}
 
-    IngredientWithQuantity {
-        Name string `json:"name"`
-        Quantity float32 `json:"quantity"`
-        Unit    string `json:"unit"`
-    }
+	IngredientWithQuantity {
+		Name     string  `json:"name"`
+		Quantity float32 `json:"quantity"`
+		Unit     string  `json:"unit"`
+	}
 
-    Stage {
-        Order int32 `json:"order"`
-        Description string `json:"description"`
-    }
+	Stage {
+		Order       int32  `json:"order"`
+		Description string `json:"description"`
+	}
 
 	RecipesReply {
 		RecipeList []Recipe `json:"recipeList"`
 	}
 )
 
-type(
-    IngredientConstraintsReq {
-        WithIngredientIdList []int64 `json:"withIngredientIdList"`
-        WithoutIngredientIdList []int64 `json:"withoutIngredientIdList"`
-    }
+// types for GetFileredRecipes
+type (
+	IngredientConstraintsReq {
+		WithIngredientIdList    []int64 `json:"withIngredientIdList"`
+		WithoutIngredientIdList []int64 `json:"withoutIngredientIdList"`
+	}
 )
 
-type(
-    AddRecipeReq {
-        title	string `json:"title"`
-        Description string `json:"description"`
-        IngredientList []LinkIngredientWithQuantity `json:"ingredientList"`
-        StageList []Stage `json:"stageList"`
-    }
+type (
+	AddRecipeReq {
+		Title          string                       `json:"title"`
+		Description    string                       `json:"description"`
+		IngredientList []LinkIngredientWithQuantity `json:"ingredientList"`
+		StageList      []Stage                      `json:"stageList"`
+	}
 
-    LinkIngredientWithQuantity{
-        IngredientId int64 `json:"ingredientId"`
-        Quantity float32 `json:"quantity"`
-        Unit    string `json:"unit"`
-    }
+	LinkIngredientWithQuantity {
+		IngredientId int64   `json:"ingredientId"`
+		Quantity     float32 `json:"quantity"`
+		Unit         string  `json:"unit"`
+	}
 
-    AddRecipeReply {
-        Id int64 `json:"id"`
-        Title string `json:"title"`
-    }
+	AddRecipeReply {
+		Id    int64  `json:"id"`
+		Title string `json:"title"`
+	}
 )
 
-type(
-    AuthReq {
-        UserId int64 `json:"userId"`
-    }
+type (
+	AuthReq {
+		UserId int64 `json:"userId"`
+	}
 )
 
 service welsh-academy-api {
 	@handler AllIngredients
 	get /ingredients returns (AllIngredientsReply)
-
+	
 	@handler AddIngredients
 	post /ingredient (AddIngredientReq) returns (IngrediendReply)
-
+	
 	@handler GetAllRecipes
 	get /recipes returns (RecipesReply)
-
+	
 	@handler GetFileredRecipes
 	get /filtered_recipes (IngredientConstraintsReq) returns (RecipesReply)
-
+	
 	@handler AddRecipe
 	post /recipe (AddRecipeReq) returns (AddRecipeReply)
-
+	
 	@handler AddFavoriteRecipe
 	post /favorite_recipe/:recipe_id (AuthReq)
-
+	
 	@handler DeleteFavoriteRecipe
 	delete /favorite_recipe/:recipe_id (AuthReq)
-
+	
 	@handler GetFavoriteRecipe
 	get /favorite_recipes (AuthReq)
 }

@@ -22,6 +22,36 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/ingredient",
 				Handler: AddIngredientsHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/recipes",
+				Handler: GetAllRecipesHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/filtered_recipes",
+				Handler: GetFileredRecipesHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/recipe",
+				Handler: AddRecipeHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/favorite_recipe/:recipe_id",
+				Handler: AddFavoriteRecipeHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/favorite_recipe/:recipe_id",
+				Handler: DeleteFavoriteRecipeHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/favorite_recipes",
+				Handler: GetFavoriteRecipeHandler(serverCtx),
+			},
 		},
 	)
 }
