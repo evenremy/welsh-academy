@@ -30,7 +30,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodGet,
 				Path:    "/filtered_recipes",
-				Handler: GetFileredRecipesHandler(serverCtx),
+				Handler: GetFilteredRecipesHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,

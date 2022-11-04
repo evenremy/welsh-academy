@@ -9,7 +9,7 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func GetFileredRecipesHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func GetFilteredRecipesHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.IngredientConstraintsReq
 		if err := httpx.Parse(r, &req); err != nil {
@@ -17,8 +17,8 @@ func GetFileredRecipesHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			return
 		}
 
-		l := logic.NewGetFileredRecipesLogic(r.Context(), svcCtx)
-		resp, err := l.GetFileredRecipes(&req)
+		l := logic.NewGetFilteredRecipesLogic(r.Context(), svcCtx)
+		resp, err := l.GetFilteredRecipes(&req)
 		if err != nil {
 			httpx.Error(w, err)
 		} else {
