@@ -35,8 +35,8 @@ type (
 	}
 
 	Ingredients struct {
-		Name string `db:"name"`
 		Id   int64  `db:"id"`
+		Name string `db:"name"`
 	}
 )
 

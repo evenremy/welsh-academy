@@ -14,6 +14,8 @@ type (
 	IngredientsModel interface {
 		ingredientsModel
 		InsertReturningId(ctx context.Context, data *Ingredients) (int64, error)
+		DeleteAllIngredients(ctx context.Context) (int64, error)
+		FindAll(ctx context.Context) ([]Ingredients, error)
 	}
 
 	customIngredientsModel struct {
@@ -21,12 +23,32 @@ type (
 	}
 )
 
+func (c customIngredientsModel) FindAll(ctx context.Context) ([]Ingredients, error) {
+	var ingredients []Ingredients
+	query := fmt.Sprintf("select * from #{c.table}")
+	err := c.conn.QueryRowsCtx(ctx, &ingredients, query)
+	if err != nil {
+		return nil, err
+	}
+	return ingredients, nil
+}
+
 type ReturningId struct {
 	Id int64 `db:"id"`
 }
 
+//goland:noinspection SqlWithoutWhere
+func (c customIngredientsModel) DeleteAllIngredients(ctx context.Context) (int64, error) {
+	query := fmt.Sprintf("Delete from %s", c.table)
+	result, err := c.conn.ExecCtx(ctx, query)
+	if err != nil {
+		return 0, err
+	}
+	return result.RowsAffected()
+}
+
 func (c customIngredientsModel) InsertReturningId(ctx context.Context, data *Ingredients) (int64, error) {
-	query := fmt.Sprintf("insert into %s (%s) values ($1) returning id", c.table, ingredientsRowsExpectAutoSet)
+	var query = fmt.Sprintf("insert into %s (%s) values ($1) returning id", c.table, ingredientsRowsExpectAutoSet)
 	resp := ReturningId{}
 	err := c.conn.QueryRowCtx(ctx, &resp, query, data.Name)
 	return resp.Id, err

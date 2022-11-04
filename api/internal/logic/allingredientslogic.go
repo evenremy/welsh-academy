@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"api/model/ingredient"
 	"context"
 
 	"api/internal/svc"
@@ -23,8 +24,13 @@ func NewAllingredientsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Al
 	}
 }
 
-func (l *AllingredientsLogic) Allingredients() (resp *types.AllIngredientsReply, err error) {
-	// todo: add your logic here and delete this line
+type destIngredientList []types.IngrediendReply
+type sourceIngredientsList []ingredient.Ingredients
 
-	return
+func (l *AllingredientsLogic) Allingredients() (resp *types.AllIngredientsReply, err error) {
+	var ingredients sourceIngredientsList
+	ingredients, err = l.svcCtx.IngredientModel.FindAll(l.ctx)
+	destIngredients := types.AllIngredientsReply{
+		IngredientList: destIngredientList(ingredients)} // FIXME
+	return &destIngredients, err
 }
