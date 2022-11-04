@@ -25,10 +25,86 @@ type (
 	}
 )
 
+type (
+	Recipe {
+		Id int64 `json:"id"`
+		title	string `json:"title"`
+		Description string `json:"description"`
+        IngredientList []IngredientWithQuantity `json:"ingredientList"`
+        StageList []Stage `json:"stageList"`
+	}
+
+    IngredientWithQuantity {
+        Name string `json:"name"`
+        Quantity float32 `json:"quantity"`
+        Unit    string `json:"unit"`
+    }
+
+    Stage {
+        Order int32 `json:"order"`
+        Description string `json:"description"`
+    }
+
+	RecipesReply {
+		RecipeList []Recipe `json:"recipeList"`
+	}
+)
+
+type(
+    IngredientConstraintsReq {
+        WithIngredientIdList []int64 `json:"withIngredientIdList"`
+        WithoutIngredientIdList []int64 `json:"withoutIngredientIdList"`
+    }
+)
+
+type(
+    AddRecipeReq {
+        title	string `json:"title"`
+        Description string `json:"description"`
+        IngredientList []LinkIngredientWithQuantity `json:"ingredientList"`
+        StageList []Stage `json:"stageList"`
+    }
+
+    LinkIngredientWithQuantity{
+        IngredientId int64 `json:"ingredientId"`
+        Quantity float32 `json:"quantity"`
+        Unit    string `json:"unit"`
+    }
+
+    AddRecipeReply {
+        Id int64 `json:"id"`
+        Title string `json:"title"`
+    }
+)
+
+type(
+    AuthReq {
+        UserId int64 `json:"userId"`
+    }
+)
+
 service welsh-academy-api {
 	@handler AllIngredients
-	get /ingredients returns (AllIngredientsReply) // TODO require regeneration of the service
-	
-	@handler AddIngredients // TODO require regeneration of the service
+	get /ingredients returns (AllIngredientsReply)
+
+	@handler AddIngredients
 	post /ingredient (AddIngredientReq) returns (IngrediendReply)
+
+	@handler GetAllRecipes
+	get /recipes returns (RecipesReply)
+
+	@handler GetFileredRecipes
+	get /filtered_recipes (IngredientConstraintsReq) returns (RecipesReply)
+
+	@handler AddRecipe
+	post /recipe (AddRecipeReq) returns (AddRecipeReply)
+
+	@handler AddFavoriteRecipe
+	post /favorite_recipe/:recipe_id (AuthReq)
+
+	@handler DeleteFavoriteRecipe
+	delete /favorite_recipe/:recipe_id (AuthReq)
+
+	@handler GetFavoriteRecipe
+	get /favorite_recipes (AuthReq)
 }
