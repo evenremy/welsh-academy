@@ -50,8 +50,15 @@ func initDB(conn sqlx.SqlConn) error {
 	}
 
 	if err = m.Up(); err != nil {
+		version, dirty, _ := m.Version()
+		fmt.Println("DB Migration Version:", version, " isDirty:", dirty)
 		return err
 	}
+	version, dirty, err := m.Version()
+	if err != nil {
+		return err
+	}
+	fmt.Println("DB Migration Version:", version, " isDirty:", dirty)
 
 	return nil
 }
