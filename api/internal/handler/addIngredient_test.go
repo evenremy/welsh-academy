@@ -1,33 +1,24 @@
 package handler
 
 import (
-	"api/internal/config"
-	"api/internal/svc"
 	"api/internal/types"
 	"bytes"
 	"encoding/json"
 	"github.com/go-faker/faker/v4"
 	_ "github.com/maxatome/go-testdeep/helpers/tdhttp"
 	_ "github.com/maxatome/go-testdeep/td"
-	"github.com/zeromicro/go-zero/core/conf"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
-const configFilePath = "../../etc/welsh-academy-api.yaml"
-
-var ctx *svc.ServiceContext
+func init() {
+	InitTestCtx()
+}
 
 const TEST_METHOD string = "POST"
 const TEST_TARGET string = "/ingredient"
-
-func init() {
-	c := config.Config{}
-	conf.MustLoad(configFilePath, &c)
-	ctx = svc.NewServiceContext(c)
-}
 
 // should work
 func TestAddIngredient(t *testing.T) {
@@ -37,7 +28,7 @@ func TestAddIngredient(t *testing.T) {
 	req.Header.Add("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
 
-	httpHandler := AddIngredientsHandler(ctx)
+	httpHandler := AddIngredientsHandler(testCtx)
 	httpHandler(rr, req)
 	if rr.Code != http.StatusOK {
 		t.Error(rr.Body)
@@ -49,7 +40,7 @@ func TestAddRejectSameNameIngredient(t *testing.T) {
 	dataReader := prepareFakeJson(&types.AddIngredientReq{})
 
 	req1, rr1 := prepareNewRequestAndResponder(TEST_METHOD, TEST_TARGET, dataReader)
-	testHandler := AddIngredientsHandler(ctx)
+	testHandler := AddIngredientsHandler(testCtx)
 	testHandler(rr1, req1) // first try should work
 	if rr1.Code != http.StatusOK {
 		t.Error(rr1.Body)
