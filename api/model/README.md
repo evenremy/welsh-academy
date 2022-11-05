@@ -6,5 +6,5 @@ https://go-zero.dev/docs/goctl/model
 The `$db` source string should be adapted based your configuration
 ```shell
 $db = "postgres://postgres:tobechanged@localhost:5432/postgres?sslmode=disable"
-goctl model pg datasource -url=$db -table="*"  -dir="model"
+goctl model pg datasource -url="$db" -table="*"  -dir="model"
 ```
