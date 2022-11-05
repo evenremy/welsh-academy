@@ -15,6 +15,10 @@ import (
 
 func init() {
 	InitTestCtx()
+
+}
+
+func deleteIngredients() {
 	_, err := testCtx.IngredientModel.DeleteAllIngredients(context.Background())
 	if err != nil {
 		panic(err.Error())
@@ -22,6 +26,8 @@ func init() {
 }
 
 func TestAllIngredientsHandler(t *testing.T) {
+	deleteIngredients()
+
 	var id int64
 	expectedIngredientNumber := 3
 	addNIngredients(expectedIngredientNumber)
@@ -49,7 +55,6 @@ func TestAllIngredientsHandler(t *testing.T) {
 
 func addNIngredients(n int) {
 	for i := 0; i < n; i++ {
-
 		dataReader := prepareFakeJson(&types.AddIngredientReq{})
 
 		req := httptest.NewRequest(TEST_METHOD, TEST_TARGET, dataReader)
@@ -62,8 +67,13 @@ func addNIngredients(n int) {
 }
 
 func TestNoIngredient(t *testing.T) {
-
+	deleteIngredients()
+	testAPI := tdhttp.NewTestAPI(t, AllIngredientsHandler(testCtx))
+	testAPI.Get("/ingredients").
+		Name("Get the 0 ingredient result").
+		CmpStatus(http.StatusOK).
+		CmpJSONBody(td.JSON(`
+{
+	"ingredientList": []
+}`))
 }
-
-// TODO limit the number of ingredients
-// TODO no ingredient found

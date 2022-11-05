@@ -1,7 +1,6 @@
 package logic
 
 import (
-	"api/model/ingredient"
 	"context"
 
 	"api/internal/svc"
@@ -24,13 +23,18 @@ func NewAllingredientsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Al
 	}
 }
 
-type destIngredientList []types.IngrediendReply
-type sourceIngredientsList []ingredient.Ingredients
+// AllIngredients
+// Risky
+// TODO should be limited/paginated
+func (l *AllingredientsLogic) AllIngredients() (resp *types.AllIngredientsReply, err error) {
+	ingredients, err := l.svcCtx.IngredientModel.FindAll(l.ctx)
 
-func (l *AllingredientsLogic) Allingredients() (resp *types.AllIngredientsReply, err error) {
-	var ingredients sourceIngredientsList
-	ingredients, err = l.svcCtx.IngredientModel.FindAll(l.ctx)
-	destIngredients := types.AllIngredientsReply{
-		IngredientList: destIngredientList(ingredients)} // FIXME
+	destList := make([]types.IngrediendReply, len(ingredients))
+
+	for i, e := range ingredients {
+		destList[i] = types.IngrediendReply(e)
+	}
+
+	destIngredients := types.AllIngredientsReply{IngredientList: destList}
 	return &destIngredients, err
 }

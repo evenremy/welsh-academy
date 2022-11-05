@@ -25,7 +25,7 @@ type (
 
 func (c customIngredientsModel) FindAll(ctx context.Context) ([]Ingredients, error) {
 	var ingredients []Ingredients
-	query := fmt.Sprintf("select * from #{c.table}")
+	query := fmt.Sprintf("select * from %s", c.table)
 	err := c.conn.QueryRowsCtx(ctx, &ingredients, query)
 	if err != nil {
 		return nil, err
