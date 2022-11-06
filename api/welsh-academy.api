@@ -30,12 +30,9 @@ type (
 // types for GetAllRecipes
 type (
 	// A readable recipe (with ingredient names)
-	Recipe {
-		Id             int64                        `json:"id"`
-		Title          string                       `json:"title"`
-		Description    string                       `json:"description"`
-		IngredientList []IngredientNameWithQuantity `json:"ingredientList"`
-		StageList      []Stage                      `json:"stageList"`
+	LiteRecipe {
+		Id    int64  `json:"id"`
+		Title string `json:"title"`
 	}
 
 	IngredientNameWithQuantity {
@@ -50,7 +47,15 @@ type (
 	}
 
 	RecipesReply {
-		RecipeList []Recipe `json:"recipeList"`
+		RecipeList []LiteRecipe `json:"recipeList"`
+	}
+
+	FullRecipeReply {
+		Id             int64                        `path:"recipe_id"`
+		Title          string                       `json:"title"`
+		Description    string                       `json:"description"`
+		IngredientList []IngredientNameWithQuantity `json:"ingredientList"`
+		StageList      []Stage                      `json:"stageList"`
 	}
 )
 
@@ -86,8 +91,9 @@ type (
 )
 
 type (
-	AuthReq {
-		UserId int64 `json:"userId"`
+	FavReq {
+		UserId   int64 `json:"userId"`
+		RecipeId int64 `path:"recipe_id"`
 	}
 )
 
@@ -114,17 +120,20 @@ service welsh-academy-api {
 	@handler GetFilteredRecipes
 	get /filtered_recipes (IngredientConstraintsReq) returns (RecipesReply)
 	
+	@handler GetRecipe
+	get /recipe/:recipe_id returns (FullRecipeReply)
+	
 	@handler AddRecipe
 	post /recipe (AddRecipeReq) returns (AddRecipeReply)
 	
 	@handler AddFavoriteRecipe
-	post /favorite_recipe/:recipe_id (AuthReq)
+	post /favorite_recipe/:recipe_id (FavReq)
 	
 	@handler DeleteFavoriteRecipe
-	delete /favorite_recipe/:recipe_id (AuthReq)
+	delete /favorite_recipe/:recipe_id (FavReq)
 	
 	@handler GetFavoriteRecipe
-	get /favorite_recipes (AuthReq)
+	get /favorite_recipes (FavReq)
 	
 	@handler AddUser
 	post /user (AddUserReq) returns (AddUserReply)

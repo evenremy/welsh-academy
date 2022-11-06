@@ -14,12 +14,9 @@ type IngrediendReply struct {
 	Name string `json:"name"`
 }
 
-type Recipe struct {
-	Id             int64                        `json:"id"`
-	Title          string                       `json:"title"`
-	Description    string                       `json:"description"`
-	IngredientList []IngredientNameWithQuantity `json:"ingredientList"`
-	StageList      []Stage                      `json:"stageList"`
+type LiteRecipe struct {
+	Id    int64  `json:"id"`
+	Title string `json:"title"`
 }
 
 type IngredientNameWithQuantity struct {
@@ -34,7 +31,15 @@ type Stage struct {
 }
 
 type RecipesReply struct {
-	RecipeList []Recipe `json:"recipeList"`
+	RecipeList []LiteRecipe `json:"recipeList"`
+}
+
+type FullRecipeReply struct {
+	Id             int64                        `path:"recipe_id"`
+	Title          string                       `json:"title"`
+	Description    string                       `json:"description"`
+	IngredientList []IngredientNameWithQuantity `json:"ingredientList"`
+	StageList      []Stage                      `json:"stageList"`
 }
 
 type IngredientConstraintsReq struct {
@@ -60,8 +65,9 @@ type AddRecipeReply struct {
 	Title string `json:"title"`
 }
 
-type AuthReq struct {
-	UserId int64 `json:"userId"`
+type FavReq struct {
+	UserId   int64 `json:"userId"`
+	RecipeId int64 `path:"recipe_id"`
 }
 
 type AddUserReq struct {
