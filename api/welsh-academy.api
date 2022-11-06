@@ -38,9 +38,9 @@ type (
 	}
 
 	IngredientWithQuantity {
-		Name     string  `json:"name"`
-		Quantity float32 `json:"quantity"`
-		Unit     string  `json:"unit"`
+		IngredientId int64   `json:"ingredientId"`
+		Quantity     float32 `json:"quantity"`
+		Unit         string  `json:"unit"`
 	}
 
 	Stage {
@@ -126,5 +126,5 @@ service welsh-academy-api {
 	post /user (AddUserReq) returns (AddUserReply)
 	
 	@handler GetFakeRecipe
-	get /example_recipe (Recipe)
+	get /example_recipe returns (Recipe)
 }

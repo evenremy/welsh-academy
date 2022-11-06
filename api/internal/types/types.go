@@ -23,9 +23,9 @@ type Recipe struct {
 }
 
 type IngredientWithQuantity struct {
-	Name     string  `json:"name"`
-	Quantity float32 `json:"quantity"`
-	Unit     string  `json:"unit"`
+	IngredientId int64   `json:"ingredientId"`
+	Quantity     float32 `json:"quantity"`
+	Unit         string  `json:"unit"`
 }
 
 type Stage struct {
