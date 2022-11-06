@@ -24,7 +24,16 @@ func NewGetAllRecipesLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Get
 }
 
 func (l *GetAllRecipesLogic) GetAllRecipes() (resp *types.RecipesReply, err error) {
-	// todo: add your logic here and delete this line
+	dest := types.RecipesReply{}
+	recipes, err := l.svcCtx.RecipeModel.FindAll(l.ctx)
+	if err != nil {
+		return nil, err
+	}
 
-	return
+	destRecipes := make([]types.LiteRecipe, len(recipes))
+	for i, r := range recipes {
+		destRecipes[i] = types.LiteRecipe(r)
+	}
+	dest.RecipeList = destRecipes
+	return &dest, nil
 }
