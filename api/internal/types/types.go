@@ -15,17 +15,17 @@ type IngrediendReply struct {
 }
 
 type Recipe struct {
-	Id             int64                    `json:"id"`
-	Title          string                   `json:"title"`
-	Description    string                   `json:"description"`
-	IngredientList []IngredientWithQuantity `json:"ingredientList"`
-	StageList      []Stage                  `json:"stageList"`
+	Id             int64                        `json:"id"`
+	Title          string                       `json:"title"`
+	Description    string                       `json:"description"`
+	IngredientList []IngredientNameWithQuantity `json:"ingredientList"`
+	StageList      []Stage                      `json:"stageList"`
 }
 
-type IngredientWithQuantity struct {
-	IngredientId int64   `json:"ingredientId"`
-	Quantity     float32 `json:"quantity"`
-	Unit         string  `json:"unit"`
+type IngredientNameWithQuantity struct {
+	Name     string  `json:"name"`
+	Quantity float32 `json:"quantity"`
+	Unit     string  `json:"unit"`
 }
 
 type Stage struct {

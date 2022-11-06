@@ -29,18 +29,19 @@ type (
 
 // types for GetAllRecipes
 type (
+	// A readable recipe (with ingredient names)
 	Recipe {
-		Id             int64                    `json:"id"`
-		Title          string                   `json:"title"`
-		Description    string                   `json:"description"`
-		IngredientList []IngredientWithQuantity `json:"ingredientList"`
-		StageList      []Stage                  `json:"stageList"`
+		Id             int64                        `json:"id"`
+		Title          string                       `json:"title"`
+		Description    string                       `json:"description"`
+		IngredientList []IngredientNameWithQuantity `json:"ingredientList"`
+		StageList      []Stage                      `json:"stageList"`
 	}
 
-	IngredientWithQuantity {
-		IngredientId int64   `json:"ingredientId"`
-		Quantity     float32 `json:"quantity"`
-		Unit         string  `json:"unit"`
+	IngredientNameWithQuantity {
+		Name     string  `json:"name"`
+		Quantity float32 `json:"quantity"`
+		Unit     string  `json:"unit"`
 	}
 
 	Stage {
@@ -62,6 +63,8 @@ type (
 )
 
 type (
+	// Recipe for creation (without generated id)
+	// Ingredients should exists or IngredientList should be empty
 	AddRecipeReq {
 		Title          string                       `json:"title"`
 		Description    string                       `json:"description"`
@@ -69,6 +72,7 @@ type (
 		StageList      []Stage                      `json:"stageList"`
 	}
 
+	// LinkIngredientWithQuantity for linking existing ingredient to parent recipe
 	LinkIngredientWithQuantity {
 		IngredientId int64   `json:"ingredientId"`
 		Quantity     float32 `json:"quantity"`
@@ -126,5 +130,5 @@ service welsh-academy-api {
 	post /user (AddUserReq) returns (AddUserReply)
 	
 	@handler GetFakeRecipe
-	get /example_recipe returns (Recipe)
+	get /example_recipe returns (AddRecipeReq)
 }

@@ -24,11 +24,10 @@ func NewGetFakeRecipeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Get
 }
 
 type fakeRecipe struct {
-	Id             int64                          `json:"id" faker:"oneof: 1, 100, 55"`
-	Title          string                         `json:"title" faker:"sentence"`
-	Description    string                         `json:"description" faker:"paragraph"`
-	IngredientList []types.IngredientWithQuantity `json:"ingredientList" faker:"-"`
-	StageList      []types.Stage                  `json:"stageList" faker:"-"`
+	Title          string                             `json:"title" faker:"sentence"`
+	Description    string                             `json:"description" faker:"paragraph"`
+	IngredientList []types.LinkIngredientWithQuantity `json:"ingredientList" faker:"-"`
+	StageList      []types.Stage                      `json:"stageList" faker:"-"`
 }
 
 type fakeIngredientWithQuantity struct {
@@ -42,18 +41,18 @@ type fakeStage struct {
 	Description string `json:"description" faker:"paragraph"`
 }
 
-func (l *GetFakeRecipeLogic) GetFakeRecipe() (*types.Recipe, error) {
+func (l *GetFakeRecipeLogic) GetFakeRecipe() (*types.AddRecipeReq, error) {
 	faker.ResetUnique()
 
 	// Generate fake ingredients
-	ingredients := make([]types.IngredientWithQuantity, 10)
+	ingredients := make([]types.LinkIngredientWithQuantity, 10)
 	for i := range ingredients {
 		fakeIngr := fakeIngredientWithQuantity{}
 		err := faker.FakeData(&fakeIngr)
 		if err != nil {
 			return nil, err
 		}
-		ingredients[i] = types.IngredientWithQuantity(fakeIngr)
+		ingredients[i] = types.LinkIngredientWithQuantity(fakeIngr)
 	}
 
 	// Generate fake stages
@@ -76,6 +75,6 @@ func (l *GetFakeRecipeLogic) GetFakeRecipe() (*types.Recipe, error) {
 	frecipe.IngredientList = ingredients
 	frecipe.StageList = stages
 
-	recipe := types.Recipe(frecipe)
+	recipe := types.AddRecipeReq(frecipe)
 	return &recipe, nil
 }
