@@ -94,7 +94,7 @@ func (l *AddRecipeLogic) addStages(stages []types.Stage, recipeId int64) error {
 			return err
 		}
 
-		_, err = l.svcCtx.StageModel.Insert(l.ctx, &newStage)
+		_, err = l.svcCtx.StageModel.InsertStageFixed(l.ctx, &newStage)
 		if err != nil {
 			l.Logger.Errorf("Error during insertion in Stages at %d/%d stages, for: %+v", i, len(stages), newStage)
 			return err
