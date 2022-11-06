@@ -62,6 +62,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/example_recipe",
 				Handler: GetFakeRecipeHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/example_ingredient",
+				Handler: GetFakeIngredientHandler(serverCtx),
+			},
 		},
 	)
 }

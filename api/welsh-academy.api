@@ -131,4 +131,7 @@ service welsh-academy-api {
 	
 	@handler GetFakeRecipe
 	get /example_recipe returns (AddRecipeReq)
+	
+	@handler GetFakeIngredient
+	get /example_ingredient returns (AddIngredientReq)
 }
