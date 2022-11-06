@@ -87,6 +87,16 @@ type (
 	}
 )
 
+type (
+	AddUserReq {
+		Username string `json:"username"`
+	}
+
+	AddUserReply {
+		UserId int64 `json:"userId"`
+	}
+)
+
 service welsh-academy-api {
 	@handler AllIngredients
 	get /ingredients returns (AllIngredientsReply)
@@ -111,4 +121,10 @@ service welsh-academy-api {
 	
 	@handler GetFavoriteRecipe
 	get /favorite_recipes (AuthReq)
+	
+	@handler AddUser
+	post /user (AddUserReq) returns (AddUserReply)
+	
+	@handler GetFakeRecipe
+	get /example_recipe (Recipe)
 }

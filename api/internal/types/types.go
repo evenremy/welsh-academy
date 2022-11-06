@@ -63,3 +63,11 @@ type AddRecipeReply struct {
 type AuthReq struct {
 	UserId int64 `json:"userId"`
 }
+
+type AddUserReq struct {
+	Username string `json:"username"`
+}
+
+type AddUserReply struct {
+	UserId int64 `json:"userId"`
+}
