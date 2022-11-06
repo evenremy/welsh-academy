@@ -23,7 +23,7 @@ func NewAddFavoriteRecipeLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 	}
 }
 
-func (l *AddFavoriteRecipeLogic) AddFavoriteRecipe(req *types.AuthReq) error {
+func (l *AddFavoriteRecipeLogic) AddFavoriteRecipe(req *types.FavReq) error {
 	// todo: add your logic here and delete this line
 
 	return nil
