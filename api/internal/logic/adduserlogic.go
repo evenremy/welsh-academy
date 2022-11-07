@@ -24,7 +24,12 @@ func NewAddUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddUserLo
 }
 
 func (l *AddUserLogic) AddUser(req *types.AddUserReq) (resp *types.AddUserReply, err error) {
-	// todo: add your logic here and delete this line
+	var id int64
+	id, err = l.svcCtx.UserModel.InsertReturningId(l.ctx, req.Username, false)
+	if err != nil {
+		return nil, err
+	}
 
-	return
+	userReply := types.AddUserReply{UserId: id}
+	return &userReply, nil
 }
