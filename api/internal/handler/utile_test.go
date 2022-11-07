@@ -29,6 +29,7 @@ func DeleteAllRecipes() {
 	_, _ = testCtx.RecipeModel.DeleteAllRecipes(context.Background())
 }
 
+// AddSomeIngredients Insert at least 10 ingredients and returns all ingredients id from the db
 func AddSomeIngredients() []int64 {
 	var listid []int64
 	someIngredients := []ingredient2.Ingredients{

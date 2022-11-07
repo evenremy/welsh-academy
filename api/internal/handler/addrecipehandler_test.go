@@ -54,7 +54,7 @@ func TestAddRecipeHandlerAutoJson(t *testing.T) {
 func createRecipeAuto(listId []int64, stageSize int) *recipeReq {
 	recipe := recipeReq{
 		Title:       "A Welsh recipe Auto",
-		Description: "Blalkslkh, BlalkslkhBlalkslkhBlalkslkhBlalkslkhBlalkslkhBlalkslkhBlalkslkh Blalkslkh",
+		Description: "Blalkslkh, BlalkslkhBlalkslkhBlalkslkh BlalkslkhBlalkslkhBlalkslkhBlalkslkh Blalkslkh",
 	}
 	recipe.IngredientList = newIngredientList(listId)
 	recipe.StageList = newStageList(stageSize)
@@ -90,7 +90,6 @@ func TestAddRecipeHandlerManualJson(t *testing.T) {
 	testApi.PostJSON("/recipe", bodyQueryRecipeJson).
 		Name("Add recipe").
 		CmpStatus(http.StatusOK)
-
 }
 
 func createRecipe(ingredientIdList []int64, stageSize uint) string {

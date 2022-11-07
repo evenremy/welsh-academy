@@ -24,7 +24,14 @@ func NewGetFilteredRecipesLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 }
 
 func (l *GetFilteredRecipesLogic) GetFilteredRecipes(req *types.IngredientConstraintsReq) (resp *types.RecipesReply, err error) {
-	// todo: add your logic here and delete this line
+	recipes, err := l.svcCtx.RecipeModel.FindFiltered(l.ctx, req.WithIngredientIdList, req.WithoutIngredientIdList)
+	if err != nil {
+		return nil, err
+	}
 
-	return
+	destRecipeList := make([]types.LiteRecipe, len(recipes))
+	for i, r := range recipes {
+		destRecipeList[i] = types.LiteRecipe(r)
+	}
+	return &types.RecipesReply{RecipeList: destRecipeList}, nil
 }

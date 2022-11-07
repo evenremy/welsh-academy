@@ -125,7 +125,7 @@ service welsh-academy-api {
 	get /recipes returns (RecipesReply)
 	
 	@handler GetFilteredRecipes
-	get /filtered_recipes (IngredientConstraintsReq) returns (RecipesReply)
+	post /filtered_recipes (IngredientConstraintsReq) returns (RecipesReply)
 	
 	@handler GetRecipe
 	get /recipe/:recipe_id (RecipeReq) returns (FullRecipeReply)
