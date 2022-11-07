@@ -2,7 +2,6 @@ package handler
 
 import (
 	"api/internal/types"
-	"context"
 	"github.com/maxatome/go-testdeep/helpers/tdhttp"
 	"github.com/maxatome/go-testdeep/td"
 	"net/http"
@@ -15,18 +14,11 @@ import (
 
 func init() {
 	InitTestCtx()
-
-}
-
-func deleteIngredients() {
-	_, err := testCtx.IngredientModel.DeleteAllIngredients(context.Background())
-	if err != nil {
-		panic(err.Error())
-	}
 }
 
 func TestAllIngredientsHandler(t *testing.T) {
-	deleteIngredients()
+	DeleteAllRecipes()
+	DeleteIngredients()
 
 	var id int64
 	expectedIngredientNumber := 3
@@ -67,7 +59,8 @@ func addNIngredients(n int) {
 }
 
 func TestNoIngredient(t *testing.T) {
-	deleteIngredients()
+	DeleteAllRecipes()
+	DeleteIngredients()
 	testAPI := tdhttp.NewTestAPI(t, AllIngredientsHandler(testCtx))
 	testAPI.Get("/ingredients").
 		Name("Get the 0 ingredient result").

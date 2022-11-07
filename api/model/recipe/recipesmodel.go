@@ -2,6 +2,7 @@ package recipe
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"strings"
@@ -17,6 +18,7 @@ type (
 		InsertReturningId(ctx context.Context, data *Recipes) (int64, error)
 		FindAll(ctx context.Context) ([]LiteRecipe, error)
 		FindFiltered(ctx context.Context, withIngredients []int64, withoutIngredients []int64) ([]LiteRecipe, error)
+		DeleteAllRecipes(ctx context.Context) (*sql.Result, error)
 	}
 
 	customRecipesModel struct {
@@ -32,6 +34,14 @@ type (
 		Title string `db:"title"`
 	}
 )
+
+func (c customRecipesModel) DeleteAllRecipes(ctx context.Context) (*sql.Result, error) {
+	result, err := c.conn.ExecCtx(ctx, "delete from recipes")
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
 
 // arrayToSqlString returns a string representation of the array parameter in the format "(1,2,3,4)"
 func arrayToSqlString(array []int64) string {

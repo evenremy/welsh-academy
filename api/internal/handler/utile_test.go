@@ -3,6 +3,8 @@ package handler
 import (
 	"api/internal/config"
 	"api/internal/svc"
+	ingredient2 "api/model/ingredient"
+	"context"
 	"github.com/zeromicro/go-zero/core/conf"
 )
 
@@ -17,4 +19,44 @@ func InitTestCtx() {
 	c := config.Config{}
 	conf.MustLoad(TestConfigFilePath, &c)
 	testCtx = svc.NewServiceContext(c)
+}
+
+func DeleteIngredients() {
+	_, _ = testCtx.IngredientModel.DeleteAllIngredients(context.Background())
+}
+
+func DeleteAllRecipes() {
+	_, _ = testCtx.RecipeModel.DeleteAllRecipes(context.Background())
+}
+
+func AddSomeIngredients() []int64 {
+	var listid []int64
+	someIngredients := []ingredient2.Ingredients{
+		{Name: "Cheddar"},
+		{Name: "Ham"},
+		{Name: "Mustard"},
+		{Name: "Bread"},
+		{Name: "Black pepper"},
+		{Name: "Bacon"},
+		{Name: "Eggs"},
+		{Name: "Beer"},
+		{Name: "Comté"},
+		{Name: "Mayonnaise"},
+	}
+	for _, si := range someIngredients {
+		_, err := testCtx.IngredientModel.InsertReturningId(context.Background(), &si)
+		if err != nil {
+			break
+		}
+	}
+
+	allIngredients, err := testCtx.IngredientModel.FindAll(context.Background())
+	if err != nil {
+		return nil
+	}
+
+	for _, ingr := range allIngredients {
+		listid = append(listid, ingr.Id)
+	}
+	return listid
 }
