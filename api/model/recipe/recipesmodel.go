@@ -36,6 +36,7 @@ type (
 )
 
 func (c customRecipesModel) DeleteAllRecipes(ctx context.Context) (*sql.Result, error) {
+	//goland:noinspection SqlWithoutWhere
 	result, err := c.conn.ExecCtx(ctx, "delete from recipes")
 	if err != nil {
 		return nil, err
@@ -56,22 +57,27 @@ func (c customRecipesModel) FindFiltered(ctx context.Context, withIngredients []
 	queryBoth := `select r.id, r.title 
 				from recipes r
 				join quantity q on r.id = q.recipe
-				where q.ingredient not in $1 and q.ingredient in $2`
+				where q.ingredient not in %s and q.ingredient in %s`
 	queryWithout := `select r.id, r.title 
 				from recipes r
 				join quantity q on r.id = q.recipe
 				where q.ingredient not in $1`
+	queryWith := `select r.id, r.title 
+				from recipes r
+				join quantity q on r.id = q.recipe
+				where q.ingredient in %s`
 
 	var recipeList []LiteRecipe
 	with := arrayToSqlString(withIngredients)
 	without := arrayToSqlString(withoutIngredients)
 
 	var err error
-	if withIngredients == nil || len(withIngredients) == 0 {
-		err = c.conn.QueryRowsCtx(ctx, &recipeList, queryBoth, without, with)
+	if len(withIngredients) > 0 && len(withoutIngredients) > 0 {
+		err = c.conn.QueryRowsCtx(ctx, &recipeList, fmt.Sprintf(queryBoth, without, with))
+	} else if len(withIngredients) > 0 {
+		err = c.conn.QueryRowsCtx(ctx, &recipeList, fmt.Sprintf(queryWith, with))
 	} else {
-		err = c.conn.QueryRowsCtx(ctx, &recipeList, queryWithout, without)
-
+		err = c.conn.QueryRowsCtx(ctx, &recipeList, fmt.Sprintf(queryWithout, without))
 	}
 	if err != nil {
 		return nil, err
