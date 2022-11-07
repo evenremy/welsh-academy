@@ -80,6 +80,7 @@ func (c customRecipesModel) FindAll(ctx context.Context) ([]LiteRecipe, error) {
 }
 
 func (c customRecipesModel) InsertReturningId(ctx context.Context, data *Recipes) (int64, error) {
+	// TODO should add transaction management (and regroup quantity & stage insertion in one method)
 	var query = fmt.Sprintf("insert into %s (%s) values ($1, $2, $3) returning id", c.table, recipesRowsExpectAutoSet)
 	resp := returningId{}
 	err := c.conn.QueryRowCtx(ctx, &resp, query, data.Title, data.Description, data.Owner)

@@ -27,6 +27,8 @@ func NewAddRecipeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddReci
 	}
 }
 
+// AddRecipe adds the recipe from request parameter AddRecipeReq and returns a AddRecipeReply (id + title)
+// IngredientList should be consistent with existing ingredients
 func (l *AddRecipeLogic) AddRecipe(req *types.AddRecipeReq) (resp *types.AddRecipeReply, err error) {
 	// Recipe
 	newRecipe := recipe.Recipes{
@@ -37,18 +39,21 @@ func (l *AddRecipeLogic) AddRecipe(req *types.AddRecipeReq) (resp *types.AddReci
 	if err != nil {
 		return nil, err
 	}
+
 	recipeId, err := l.svcCtx.RecipeModel.InsertReturningId(l.ctx, &newRecipe)
 	if err != nil {
 		l.Logger.Errorf("Error during insertion for Recipe : id = %d", recipeId)
 		return nil, err
 	}
 
-	err = l.addIngredients(req.IngredientList, recipeId)
+	// Stages
+	err = l.addStages(req.StageList, recipeId)
 	if err != nil {
 		return nil, err
 	}
 
-	err = l.addStages(req.StageList, recipeId)
+	// Ingredients
+	err = l.addIngredients(req.IngredientList, recipeId)
 	if err != nil {
 		return nil, err
 	}
