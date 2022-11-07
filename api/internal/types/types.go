@@ -42,6 +42,10 @@ type FullRecipeReply struct {
 	StageList      []Stage                      `json:"stageList"`
 }
 
+type RecipeReq struct {
+	RecipeId int64 `path:"recipe_id"`
+}
+
 type IngredientConstraintsReq struct {
 	WithIngredientIdList    []int64 `json:"withIngredientIdList"`
 	WithoutIngredientIdList []int64 `json:"withoutIngredientIdList"`

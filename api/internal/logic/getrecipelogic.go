@@ -23,8 +23,17 @@ func NewGetRecipeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetReci
 	}
 }
 
-func (l *GetRecipeLogic) GetRecipe() (resp *types.FullRecipeReply, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+func (l *GetRecipeLogic) GetRecipe(req *types.RecipeReq) (resp *types.FullRecipeReply, err error) {
+	recipe, err := l.svcCtx.RecipeModel.FindOne(l.ctx, req.RecipeId)
+	if err != nil {
+		return nil, err
+	}
+	quantities, err := l.svcCtx.QuantityModel.FindByRecipe(l.ctx, req.RecipeId)
+	if err != nil {
+		return nil, err
+	}
+	stages, err := l.svcCtx.StageModel.FindByRecipe(l.ctx, req.RecipeId)
+	if err != nil {
+		return nil, err
+	}
 }

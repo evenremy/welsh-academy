@@ -59,6 +59,13 @@ type (
 	}
 )
 
+// GetRecipe
+type (
+	RecipeReq {
+		RecipeId int64 `path:"recipe_id"`
+	}
+)
+
 // types for GetFileredRecipes
 type (
 	IngredientConstraintsReq {
@@ -121,7 +128,7 @@ service welsh-academy-api {
 	get /filtered_recipes (IngredientConstraintsReq) returns (RecipesReply)
 	
 	@handler GetRecipe
-	get /recipe/:recipe_id returns (FullRecipeReply)
+	get /recipe/:recipe_id (RecipeReq) returns (FullRecipeReply)
 	
 	@handler AddRecipe
 	post /recipe (AddRecipeReq) returns (AddRecipeReply)
