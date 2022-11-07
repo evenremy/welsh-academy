@@ -3,7 +3,7 @@ package quantity
 import (
 	"api/model"
 	"context"
-	"fmt"
+	"database/sql"
 	"github.com/zeromicro/go-zero/core/stores/sqlc"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
@@ -15,17 +15,29 @@ type (
 	// and implement the added methods in customQuantityModel.
 	QuantityModel interface {
 		quantityModel
-		FindByRecipe(ctx context.Context, recipeId int64) ([]Quantity, error)
+		FindByRecipe(ctx context.Context, recipeId int64) ([]QuantityWithName, error)
 	}
 
 	customQuantityModel struct {
 		*defaultQuantityModel
 	}
+
+	QuantityWithName struct {
+		Recipe         int64           `db:"recipe"`
+		IngredientId   int64           `db:"ingredient"`
+		IngredientName string          `db:"name"`
+		Unit           string          `db:"unit"`
+		Quantity       sql.NullFloat64 `db:"quantity"`
+		Id             int64           `db:"id"`
+	}
 )
 
-func (c customQuantityModel) FindByRecipe(ctx context.Context, recipeId int64) ([]Quantity, error) {
-	var resp []Quantity
-	query := fmt.Sprintf("select %s from %s where recipe = $1", quantityRows, c.table)
+func (c customQuantityModel) FindByRecipe(ctx context.Context, recipeId int64) ([]QuantityWithName, error) {
+	var resp []QuantityWithName
+	query := `select q.*, i.name
+				from quantity q
+			    join ingredients i on i.id = q.ingredient 
+				where recipe = $1`
 	err := c.conn.QueryRowsCtx(ctx, &resp, query, recipeId)
 	switch err {
 	case nil:
