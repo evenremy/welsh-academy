@@ -1,6 +1,7 @@
 package ingredient
 
 import (
+	"api/model"
 	"context"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
@@ -33,10 +34,6 @@ func (c customIngredientsModel) FindAll(ctx context.Context) ([]Ingredients, err
 	return ingredients, nil
 }
 
-type ReturningId struct {
-	Id int64 `db:"id"`
-}
-
 //goland:noinspection SqlWithoutWhere
 func (c customIngredientsModel) DeleteAllIngredients(ctx context.Context) (int64, error) {
 	query := fmt.Sprintf("Delete from %s", c.table)
@@ -49,7 +46,7 @@ func (c customIngredientsModel) DeleteAllIngredients(ctx context.Context) (int64
 
 func (c customIngredientsModel) InsertReturningId(ctx context.Context, data *Ingredients) (int64, error) {
 	var query = fmt.Sprintf("insert into %s (%s) values ($1) returning id", c.table, ingredientsRowsExpectAutoSet)
-	resp := ReturningId{}
+	resp := model.ReturningId{}
 	err := c.conn.QueryRowCtx(ctx, &resp, query, data.Name)
 	return resp.Id, err
 }
