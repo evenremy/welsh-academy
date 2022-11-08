@@ -24,7 +24,15 @@ func NewGetFavoriteRecipesLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 }
 
 func (l *GetFavoriteRecipesLogic) GetFavoriteRecipes(req *types.FavReq) (resp *types.RecipesReply, err error) {
-	// todo: add your logic here and delete this line
+	favRecipeList, err := l.svcCtx.FavoriteModel.FindFavRecipeByUser(l.ctx, req.UserId)
 
-	return
+	reply := types.RecipesReply{}
+	reply.RecipeList = make([]types.LiteRecipe, len(favRecipeList))
+	for i, r := range favRecipeList {
+		reply.RecipeList[i] = types.LiteRecipe(struct {
+			Id    int64
+			Title string
+		}{Id: r.Id, Title: r.Title})
+	}
+	return &reply, nil
 }

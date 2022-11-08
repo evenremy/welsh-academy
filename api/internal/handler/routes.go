@@ -54,7 +54,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/favorite_recipes",
+				Path:    "/favorite_recipes/:user_id",
 				Handler: GetFavoriteRecipesHandler(serverCtx),
 			},
 			{

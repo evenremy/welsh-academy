@@ -24,7 +24,10 @@ func NewDeleteFavoriteRecipeLogic(ctx context.Context, svcCtx *svc.ServiceContex
 }
 
 func (l *DeleteFavoriteRecipeLogic) DeleteFavoriteRecipe(req *types.FavReq) error {
-	// todo: add your logic here and delete this line
+	err := l.svcCtx.FavoriteModel.DeleteFavoriteByRecipeAndUserId(l.ctx, req.RecipeId, req.UserId)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

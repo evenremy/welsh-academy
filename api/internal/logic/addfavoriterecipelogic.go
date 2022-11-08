@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"api/model/favorite"
 	"context"
 
 	"api/internal/svc"
@@ -24,7 +25,12 @@ func NewAddFavoriteRecipeLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 func (l *AddFavoriteRecipeLogic) AddFavoriteRecipe(req *types.FavReq) error {
-	// todo: add your logic here and delete this line
-
+	_, err := l.svcCtx.FavoriteModel.InsertReturningId(l.ctx, &favorite.Favorites{
+		User:   req.UserId,
+		Recipe: req.RecipeId,
+	})
+	if err != nil {
+		return err
+	}
 	return nil
 }
