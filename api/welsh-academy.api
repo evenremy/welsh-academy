@@ -102,7 +102,6 @@ type (
 		UserId   int64 `json:"userId"`
 		RecipeId int64 `path:"recipe_id"`
 	}
-
 )
 
 type (

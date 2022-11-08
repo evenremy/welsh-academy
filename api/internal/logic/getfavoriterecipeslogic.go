@@ -9,22 +9,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetFavoriteRecipeLogic struct {
+type GetFavoriteRecipesLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewGetFavoriteRecipeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetFavoriteRecipeLogic {
-	return &GetFavoriteRecipeLogic{
+func NewGetFavoriteRecipesLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetFavoriteRecipesLogic {
+	return &GetFavoriteRecipesLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *GetFavoriteRecipeLogic) GetFavoriteRecipe(req *types.FavReq) error {
+func (l *GetFavoriteRecipesLogic) GetFavoriteRecipes(req *types.FavReq) (resp *types.RecipesReply, err error) {
 	// todo: add your logic here and delete this line
 
-	return nil
+	return
 }

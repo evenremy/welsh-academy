@@ -9,7 +9,7 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func GetFavoriteRecipeHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func GetFavoriteRecipesHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.FavReq
 		if err := httpx.Parse(r, &req); err != nil {
@@ -17,12 +17,12 @@ func GetFavoriteRecipeHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			return
 		}
 
-		l := logic.NewGetFavoriteRecipeLogic(r.Context(), svcCtx)
-		err := l.GetFavoriteRecipe(&req)
+		l := logic.NewGetFavoriteRecipesLogic(r.Context(), svcCtx)
+		resp, err := l.GetFavoriteRecipes(&req)
 		if err != nil {
 			httpx.Error(w, err)
 		} else {
-			httpx.Ok(w)
+			httpx.OkJson(w, resp)
 		}
 	}
 }
