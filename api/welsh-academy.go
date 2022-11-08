@@ -1,8 +1,11 @@
 package main
 
 import (
+	"api/errorx"
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/rest/httpx"
+	"net/http"
 
 	"api/internal/config"
 	"api/internal/handler"
@@ -25,6 +28,16 @@ func main() {
 
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
+
+	// Custom error
+	httpx.SetErrorHandler(func(err error) (int, interface{}) {
+		switch e := err.(type) {
+		case errorx.ApiError:
+			return int(e.StatusHttp()), e.Data()
+		default:
+			return http.StatusInternalServerError, nil
+		}
+	})
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()
