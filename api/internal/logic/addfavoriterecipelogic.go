@@ -1,8 +1,11 @@
 package logic
 
 import (
+	"api/errorx"
+	"api/model"
 	"api/model/favorite"
 	"context"
+	"net/http"
 
 	"api/internal/svc"
 	"api/internal/types"
@@ -25,12 +28,21 @@ func NewAddFavoriteRecipeLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 func (l *AddFavoriteRecipeLogic) AddFavoriteRecipe(req *types.FavReq) error {
-	_, err := l.svcCtx.FavoriteModel.InsertReturningId(l.ctx, &favorite.Favorites{
+	// Check user presence
+	_, err := l.svcCtx.UserModel.FindOne(l.ctx, req.UserId)
+	switch err {
+	case nil:
+	case model.ErrNotFound:
+		return errorx.NewCodeError(22, "impossible to add favorite", http.StatusForbidden)
+	}
+
+	_, err = l.svcCtx.FavoriteModel.InsertReturningId(l.ctx, &favorite.Favorites{
 		User:   req.UserId,
 		Recipe: req.RecipeId,
 	})
 	if err != nil {
-		return err
+		l.Error(err)
+		return errorx.NewCodeError(0, "Saving favorite failed", http.StatusInternalServerError)
 	}
 	return nil
 }

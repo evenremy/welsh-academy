@@ -99,8 +99,12 @@ type (
 
 type (
 	FavReq {
-		UserId   int64 `json:"userId" path:"user_id"`
+		UserId   int64 `json:"userId"`
 		RecipeId int64 `path:"recipe_id"`
+	}
+
+	GetFavReq {
+		UserId int64 `path:"user_id"`
 	}
 )
 
@@ -140,7 +144,7 @@ service welsh-academy-api {
 	delete /favorite_recipe/:recipe_id (FavReq)
 	
 	@handler GetFavoriteRecipes
-	get /favorite_recipes/:user_id (FavReq) returns (RecipesReply)
+	get /favorite_recipes/:user_id (GetFavReq) returns (RecipesReply)
 	
 	@handler AddUser
 	post /user (AddUserReq) returns (AddUserReply)
