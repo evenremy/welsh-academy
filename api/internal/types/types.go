@@ -71,7 +71,7 @@ type AddRecipeReply struct {
 
 type FavReq struct {
 	UserId   int64 `json:"userId"`
-	RecipeId int64 `path:"recipe_id"`
+	RecipeId int64 `json:"recipeId"`
 }
 
 type GetFavReq struct {

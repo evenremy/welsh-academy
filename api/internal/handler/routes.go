@@ -44,12 +44,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/favorite_recipe/:recipe_id",
+				Path:    "/favorite_recipe",
 				Handler: AddFavoriteRecipeHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/favorite_recipe/:recipe_id",
+				Path:    "/favorite_recipe",
 				Handler: DeleteFavoriteRecipeHandler(serverCtx),
 			},
 			{
