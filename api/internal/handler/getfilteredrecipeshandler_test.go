@@ -47,8 +47,10 @@ func TestGetFilteredRecipesHandler(t *testing.T) {
 	"title": $title}
 	]
 }
-`, td.Tag("id1", recipeId1),
-			td.Tag("id2", recipeId2)))
+`,
+			td.Tag("id1", recipeId1),
+			td.Tag("id2", recipeId2),
+			td.Tag("title", td.NotEmpty())))
 
 }
 

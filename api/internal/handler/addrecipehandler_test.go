@@ -1,11 +1,9 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/maxatome/go-testdeep/helpers/tdhttp"
 	"github.com/maxatome/go-testdeep/td"
 	"net/http"
-	"strings"
 	"testing"
 )
 
@@ -27,11 +25,6 @@ type stage struct {
 	Description string `json:"description"`
 }
 
-type reply struct {
-	Id    int64  `json:"id"`
-	Title string `json:"title"`
-}
-
 func TestAddRecipeHandlerAutoJson(t *testing.T) {
 	DeleteIngredients()
 	ingredientsId := AddSomeIngredients()
@@ -48,7 +41,6 @@ func TestAddRecipeHandlerAutoJson(t *testing.T) {
 	"id":$id
 }
 `, td.Tag("id", td.Gt(0))))
-
 }
 
 func createRecipeAuto(listId []int64, stageSize int) *recipeReq {
@@ -78,57 +70,4 @@ func newStageList(size int) []stage {
 		stages[i].Description = "Perferendis voluptatem sit aut accusantium consequatur. Consequatur voluptatem accusantium aut perferendis sit. Consequatur perferendis aut voluptatem sit accusantium. Consequatur sit voluptatem aut accusantium perferendis. Sit voluptatem aut perferendis consequatur accusantium. Aut voluptatem accusantium consequatur sit perferendis. Perferendis aut sit voluptatem accusantium consequatur. Voluptatem aut sit perferendis consequatur accusantium."
 	}
 	return stages
-}
-
-func TestAddRecipeHandlerManualJson(t *testing.T) {
-	DeleteIngredients()
-	ingredientsId := AddSomeIngredients()
-	var bodyQueryRecipeJson = createRecipe(ingredientsId[0:3], 6)
-
-	testApi := tdhttp.NewTestAPI(t, AddRecipeHandler(testCtx))
-	testApi.AutoDumpResponse()
-	testApi.PostJSON("/recipe", bodyQueryRecipeJson).
-		Name("Add recipe").
-		CmpStatus(http.StatusOK)
-}
-
-func createRecipe(ingredientIdList []int64, stageSize uint) string {
-	ingredientsFragment := ingredientsFragmentFrom(ingredientIdList)
-	stagesFragmentStr := stagesFragment(stageSize)
-	var recipe = fmt.Sprintf(`{
-	"title": "A Welsh recipe",
-	"description": "Welsh description",
-	"ingredientList": %s,
-	"stageList": %s
-}`, ingredientsFragment, stagesFragmentStr)
-	return recipe
-}
-
-func stagesFragment(size uint) string {
-	fragment := "["
-	for i := uint(0); i < size; i++ {
-		str := fmt.Sprintf(`
-{
-	"order": %d,
-	"description": "Blalkslkh, BlalkslkhBlalkslkhBlalkslkhBlalkslkhBlalkslkhBlalkslkhBlalkslkh Blalkslkh"
-},`, i)
-		fragment = fragment + str
-	}
-	fragment = strings.TrimRight(fragment, ",") + "]"
-	return fragment
-}
-
-func ingredientsFragmentFrom(list []int64) string {
-	fragment := "["
-	for _, id := range list {
-		str := fmt.Sprintf(`
-{
-	"ingredientId": %d,
-	"quantity": 25.0,
-	"unit": "ml"
-},`, id)
-		fragment = fragment + str
-	}
-	fragment = strings.TrimRight(fragment, ",") + "]"
-	return fragment
 }
