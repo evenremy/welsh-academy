@@ -33,7 +33,7 @@ func (l *AddFavoriteRecipeLogic) AddFavoriteRecipe(req *types.FavReq) error {
 	switch err {
 	case nil:
 	case model.ErrNotFound:
-		return errorx.NewCodeError(22, "impossible to add favorite, user not found", http.StatusForbidden)
+		return errorx.NewCodeError(22, "unable to add favorite, user not found", http.StatusForbidden)
 	}
 
 	_, err = l.svcCtx.FavoriteModel.InsertReturningId(l.ctx, &favorite.Favorites{
@@ -42,7 +42,7 @@ func (l *AddFavoriteRecipeLogic) AddFavoriteRecipe(req *types.FavReq) error {
 	})
 	if err != nil {
 		l.Error(err)
-		return errorx.NewCodeError(0, "Saving favorite failed", http.StatusNotModified)
+		return errorx.NewCodeError(23, "Saving favorite failed", http.StatusNotModified)
 	}
 	return nil
 }

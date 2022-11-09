@@ -12,10 +12,6 @@ import (
 	_ "github.com/maxatome/go-testdeep/td"
 )
 
-func init() {
-	InitTestCtx()
-}
-
 func TestAllIngredientsHandler(t *testing.T) {
 	DeleteAllRecipes()
 	DeleteIngredients()

@@ -17,15 +17,15 @@ func TestAddFavoriteRecipeHandlerErrors(t *testing.T) {
 	}
 	testApi.PostJSON("/favorite_recipe", body).
 		CmpStatus(http.StatusForbidden).
-		CmpJSONBody(`
+		CmpJSONBody(td.JSON(`
 {
+	"code": 22,
 	"msg": NotEmpty()
-	"code": Gt(0)
 }
-`)
+`))
 }
 
-func TestAddFavoriteRecipeHandler(t *testing.T) {
+func TestAddFavoriteRecipeHandlerExistingUser(t *testing.T) {
 	userId, err := testCtx.UserModel.InsertReturningId(context.Background(), "abc", false)
 	if err != nil {
 		return
@@ -39,8 +39,8 @@ func TestAddFavoriteRecipeHandler(t *testing.T) {
 		CmpStatus(http.StatusForbidden).
 		CmpJSONBody(td.JSON(`
 {
+	"code": 23,
 	"msg": NotEmpty()
-	"code": Gt(0)
 }
 `))
 }

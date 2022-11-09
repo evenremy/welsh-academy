@@ -13,10 +13,6 @@ import (
 	"testing"
 )
 
-func init() {
-	InitTestCtx()
-}
-
 const TEST_METHOD string = "POST"
 const TEST_TARGET string = "/ingredient"
 
