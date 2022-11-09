@@ -1,24 +1,31 @@
 package handler
 
 import (
+	"api/errorx"
 	"api/internal/config"
 	"api/internal/svc"
 	ingredient2 "api/model/ingredient"
 	"context"
 	"github.com/zeromicro/go-zero/core/conf"
+	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
+// Give access to models/db
 var testCtx *svc.ServiceContext
 
 const TestConfigFilePath = "../../etc/welsh-academy-api.yaml"
 
-func InitTestCtx() {
+func init() {
+	// testCtx initialisation
 	if testCtx != nil {
 		return
 	}
 	c := config.Config{}
 	conf.MustLoad(TestConfigFilePath, &c)
 	testCtx = svc.NewServiceContext(c)
+
+	// set error handler to test json error formatting
+	httpx.SetErrorHandler(errorx.ErrorHandler)
 }
 
 func DeleteIngredients() {
