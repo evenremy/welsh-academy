@@ -1,0 +1,116 @@
+{
+	"info": {
+		"_postman_id": "b5543897-295e-4eb5-9a8c-9de16f520a86",
+		"name": "Ingredients",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "14245959-b5543897-295e-4eb5-9a8c-9de16f520a86"
+	},
+	"item": [
+		{
+			"name": "Get all ingredients",
+			"id": "f93d8965-a436-4d88-a160-2d1a04d1102d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/ingredients",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ingredients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new ingredient",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "670f1608-4a8d-4a58-bb67-6ffe6e4dd621",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a0d938e-8638-4d50-a2bf-77d5bd5e30db",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "8863c28a-61cd-41df-8989-9700238b6533",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{$randomBsNoun}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/ingredient",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "a73b79ac-df4b-40f4-ad68-7915db1b7e4c",
+				"type": "text/javascript",
+				"exec": [
+					"pm.sendRequest(pm.environment.replaceIn(\"{{url}}/example_ingredient\"), function (err, response) {",
+					"    pm.collectionVariables.set(\"body_ingredient\", response.body);",
+					"    console.log(pm.collectionVariables.get(\"body_ingredient\"));",
+					"});",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "49087162-01e1-4b77-8897-1821c5385b3e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "93ac8920-5844-40be-a128-2de126a110f8",
+			"key": "body_ingredient",
+			"value": ""
+		}
+	]
+}

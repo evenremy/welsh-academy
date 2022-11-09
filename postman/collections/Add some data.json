@@ -1,0 +1,404 @@
+{
+	"info": {
+		"_postman_id": "44d95f90-c402-4c1a-bc2d-4f5bac6f1fac",
+		"name": "Add some data",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "14245959-44d95f90-c402-4c1a-bc2d-4f5bac6f1fac"
+	},
+	"item": [
+		{
+			"name": "Add new ingredient Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "670f1608-4a8d-4a58-bb67-6ffe6e4dd621",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a0d938e-8638-4d50-a2bf-77d5bd5e30db",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "97ffe308-c9f3-4146-b813-598544815644",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"bread\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/ingredient",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new ingredient Copy 2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "670f1608-4a8d-4a58-bb67-6ffe6e4dd621",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a0d938e-8638-4d50-a2bf-77d5bd5e30db",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "d465d975-d433-4a7a-a3ea-dcee0cd51c53",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"cheddar\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/ingredient",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new ingredient Copy 2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "670f1608-4a8d-4a58-bb67-6ffe6e4dd621",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a0d938e-8638-4d50-a2bf-77d5bd5e30db",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "3e486337-d0ca-4f9a-a1d7-d69fdac02933",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ham\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/ingredient",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new ingredient Copy 3",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "670f1608-4a8d-4a58-bb67-6ffe6e4dd621",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a0d938e-8638-4d50-a2bf-77d5bd5e30db",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "b2ade61c-7de4-4c8a-b7a7-600b9c2c5cff",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"mustard\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/ingredient",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new ingredient Copy 2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "670f1608-4a8d-4a58-bb67-6ffe6e4dd621",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a0d938e-8638-4d50-a2bf-77d5bd5e30db",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "2c113543-70ee-430c-866a-1f9a3048c89f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"black pepper\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/ingredient",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new ingredient Copy 3",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "670f1608-4a8d-4a58-bb67-6ffe6e4dd621",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a0d938e-8638-4d50-a2bf-77d5bd5e30db",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "6659be88-199c-45c5-a0c1-dead5653cb7f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"eggs\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/ingredient",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new ingredient Copy 3",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "670f1608-4a8d-4a58-bb67-6ffe6e4dd621",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a0d938e-8638-4d50-a2bf-77d5bd5e30db",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "dadb3d38-1cc1-45ff-b192-6919b508f260",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"bacon\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/ingredient",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add recipe",
+			"id": "b1e78e76-dbc8-464b-ba7b-f2f03ded9333",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Recipe 1\",\r\n    \"description\": \"Voluptatem consequatur aut perferendis accusantium sit. Perferendis sit aut accusantium voluptatem consequatur.\",\r\n    \"ingredientList\": [\r\n        {\r\n            \"ingredientId\": 4,\r\n            \"quantity\": 50,\r\n            \"unit\": \"g\"\r\n        },\r\n        {\r\n            \"ingredientId\": 3,\r\n            \"quantity\": 2,\r\n            \"unit\": \"slices\"\r\n        },\r\n        {\r\n            \"ingredientId\": 1,\r\n            \"quantity\": 2,\r\n            \"unit\": \"slices\"\r\n        },\r\n        {\r\n            \"ingredientId\": 2,\r\n            \"quantity\": 500,\r\n            \"unit\": \"g\"\r\n        },\r\n        {\r\n            \"ingredientId\": 6,\r\n            \"quantity\": 2,\r\n            \"unit\": \"\"\r\n        }\r\n    ],\r\n    \"stageList\": [\r\n        {\r\n            \"order\": 5,\r\n            \"description\": \"Perferendis aut voluptatem sit consequatur accusantium. Consequatur voluptatem sit aut perferendis accusantium. Consequatur sit aut voluptatem perferendis accusantium. Perferendis consequatur voluptatem aut sit accusantium. Sit accusantium aut perferendis consequatur voluptatem. Consequatur accusantium voluptatem sit aut perferendis. Perferendis accusantium sit voluptatem aut consequatur. Aut sit accusantium perferendis consequatur voluptatem.\"\r\n        },\r\n        {\r\n            \"order\": 7,\r\n            \"description\": \"Aut accusantium sit consequatur voluptatem perferendis. Aut voluptatem perferendis sit consequatur accusantium. Accusantium consequatur voluptatem sit aut perferendis.\"\r\n        },\r\n        {\r\n            \"order\": 8,\r\n            \"description\": \"Perferendis accusantium sit aut consequatur voluptatem. Sit consequatur accusantium voluptatem perferendis aut. Sit consequatur perferendis voluptatem aut accusantium. Aut voluptatem consequatur sit perferendis accusantium. Perferendis sit aut consequatur accusantium voluptatem. Perferendis aut consequatur sit voluptatem accusantium. Consequatur accusantium voluptatem aut perferendis sit. Sit accusantium consequatur voluptatem aut perferendis. Voluptatem consequatur perferendis aut accusantium sit. Perferendis voluptatem aut sit consequatur accusantium.\"\r\n        },\r\n        {\r\n            \"order\": 2,\r\n            \"description\": \"Aut voluptatem sit perferendis accusantium consequatur. Consequatur perferendis accusantium voluptatem aut sit. Accusantium sit perferendis aut consequatur voluptatem. Aut consequatur accusantium perferendis sit voluptatem. Perferendis voluptatem consequatur accusantium aut sit. Voluptatem perferendis sit consequatur aut accusantium. Aut consequatur sit accusantium voluptatem perferendis. Sit aut perferendis consequatur accusantium voluptatem.\"\r\n        },\r\n        {\r\n            \"order\": 4,\r\n            \"description\": \"Accusantium voluptatem consequatur perferendis aut sit. Consequatur aut voluptatem sit accusantium perferendis. Sit consequatur accusantium aut perferendis voluptatem. Perferendis sit consequatur accusantium voluptatem aut. Perferendis consequatur aut voluptatem sit accusantium. Voluptatem sit perferendis consequatur accusantium aut. Sit aut accusantium voluptatem consequatur perferendis. Accusantium sit aut perferendis consequatur voluptatem. Voluptatem perferendis aut accusantium sit consequatur.\"\r\n        },\r\n        {\r\n            \"order\": 3,\r\n            \"description\": \"Accusantium voluptatem perferendis sit aut consequatur. Aut voluptatem sit accusantium perferendis consequatur. Voluptatem accusantium consequatur aut perferendis sit. Consequatur sit accusantium perferendis aut voluptatem. Aut accusantium voluptatem perferendis sit consequatur. Aut perferendis consequatur voluptatem sit accusantium. Perferendis voluptatem accusantium consequatur sit aut. Aut perferendis sit voluptatem accusantium consequatur.\"\r\n        },\r\n        {\r\n            \"order\": 10,\r\n            \"description\": \"Accusantium sit perferendis voluptatem consequatur aut. Accusantium perferendis voluptatem sit aut consequatur. Accusantium perferendis sit aut voluptatem consequatur. Perferendis voluptatem accusantium consequatur sit aut.\"\r\n        },\r\n        {\r\n            \"order\": 6,\r\n            \"description\": \"Aut sit consequatur voluptatem accusantium perferendis. Sit perferendis aut consequatur accusantium voluptatem. Consequatur sit accusantium voluptatem perferendis aut. Sit aut accusantium perferendis consequatur voluptatem. Perferendis voluptatem accusantium aut consequatur sit. Sit accusantium consequatur voluptatem perferendis aut. Consequatur accusantium sit perferendis aut voluptatem. Sit accusantium consequatur voluptatem perferendis aut.\"\r\n        },\r\n        {\r\n            \"order\": 1,\r\n            \"description\": \"Perferendis accusantium consequatur voluptatem aut sit. Aut consequatur perferendis sit voluptatem accusantium. Aut voluptatem consequatur accusantium perferendis sit.\"\r\n        },\r\n        {\r\n            \"order\": 9,\r\n            \"description\": \"Aut perferendis consequatur sit accusantium voluptatem.\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/recipe",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"recipe"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
