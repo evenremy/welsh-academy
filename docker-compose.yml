@@ -1,5 +1,5 @@
 services:
-  db-dev:
+  db:
     image: postgres
     environment:
       POSTGRES_PASSWORD: tobechanged
@@ -7,22 +7,16 @@ services:
       - data:/var/lib/postgresql/data
     ports:
       - 5432:5432
-    profiles:
-      - dev
-
-  db-prod:
-    image: postgres
-    environment:
-      POSTGRES_PASSWORD_FILE: password_file_path
-    volumes:
-      - data:/var/lib/postgresql/data
-    profiles:
-      - prod
 
   api:
-    image: ghcr.io/evenremy/welsh-academy:main
+    image: ghcr.io/evenremy/welsh-academy:latest
+    depends_on:
+      - db
     ports:
       - 80:8888
+    build:
+      dockerfile: Dockerfile
+      context: api/
 
 volumes:
   data:
