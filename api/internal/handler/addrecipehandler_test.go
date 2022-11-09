@@ -43,12 +43,12 @@ func TestAddRecipeHandlerAutoJson(t *testing.T) {
 `, td.Tag("id", td.Gt(0))))
 }
 
-func createRecipeAuto(listId []int64, stageSize int) *recipeReq {
+func createRecipeAuto(listIngredientId []int64, stageSize int) *recipeReq {
 	recipe := recipeReq{
 		Title:       "A Welsh recipe Auto",
 		Description: "Blalkslkh, BlalkslkhBlalkslkhBlalkslkh BlalkslkhBlalkslkhBlalkslkhBlalkslkh Blalkslkh",
 	}
-	recipe.IngredientList = newIngredientList(listId)
+	recipe.IngredientList = newIngredientList(listIngredientId)
 	recipe.StageList = newStageList(stageSize)
 	return &recipe
 }
