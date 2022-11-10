@@ -7,7 +7,7 @@ COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
 COPY . .
-RUN go build -v -o /usr/local/bin/app ./api/welsh-academy.go
+RUN go build -v -o /usr/local/bin/app ./welsh-academy.go
 
 EXPOSE 8888/tcp
 
