@@ -75,12 +75,6 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-    - name: Download a Build Artifact
-      uses: actions/download-artifact@v3.0.1
-      with:
-        name: build
-        path: api/
-
     - name: Adding exec Permission
       run: chmod +x api/api
 
