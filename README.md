@@ -36,10 +36,10 @@ docker-compose up
   - And the port (default value : 8888)
 - `go run welsh-academy.go`
 
-## Tests
+#### Tests
 
 To run all the tests :
-`go test ./...`
+`go test api/...`
 
 ## Usage
 
