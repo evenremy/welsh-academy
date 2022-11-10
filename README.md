@@ -41,6 +41,35 @@ docker-compose up
 To run all the tests :
 `go test ./...`
 
+## Usage
+
+All the API specifications are in [welsh-academy.api](api/welsh-academy.api) :
+The .api file contain all the json types for requests and replies.
+The api should always return a valid Json response. 
+
+Ingredients should be created before any usage in recipe.
+Users and recipes should be created before adding favorite recipes.
+
+API summary (maybe outdated) : 
+```
+get /ingredients
+post /ingredient (json) returns (id & name)
+get /recipes returns (list of recipe id & title)
+post /filtered_recipes (json) returns (list of recipe id & title)
+get /recipe/:recipe_id returns (full recipe)
+post /recipe (json) returns (id and title)
+post /favorite_recipe (json)
+delete /favorite_recipe (json) # ko
+get /favorite_recipes/:user_id returns (list of recipe id & title)
+post /user (json) returns (user id & username)
+```
+
+Some examples, usable for creation : 
+```
+get /example_ingredient returns (creation json example)
+get /example_recipe returns (creation json example)
+```
+
 ## Design
 Implementation with the [go-zero framework](https://github.com/zeromicro/go-zero) and PostgreSQL.
 
@@ -83,13 +112,3 @@ quantity --* ingredients
 Not suitable for production : 
 - no authorisation management
 - no cache management
-
-## How to deploy
-
-## Usage
-
-## Questions 
-- how to specialize for welsh recipes only ? (business scenario)
-    - **Easy** : validation process by admins or moderators
-    - **Hard** : adding a constraint management in the system (typing ingredients and mandatory ingredients in each recipe) : but of
-loss of flexibility for innovative recipes
