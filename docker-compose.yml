@@ -14,9 +14,6 @@ services:
       - db
     ports:
       - 8888:8888
-    build:
-      dockerfile: Dockerfile
-      context: api/
 
 volumes:
   data:

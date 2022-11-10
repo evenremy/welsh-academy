@@ -8,7 +8,7 @@ A welsh recipes management backend
 
 ## Installation 
 
-First step : retrieve the code of the repository (or only the `docker-compose.yml`).
+**First step :** retrieve the code of the repository (or only the `docker-compose.yml` for just a deployment).
 
 ### With docker-compose (preferred)
 
@@ -34,13 +34,12 @@ docker-compose up
   of the API accordingly.
   - Change the Datasource string
   - And the port (default value : 8888)
+- `go run welsh-academy.go`
 
 ## Tests
 
 To run all the tests :
-go test ./...
-
-
+`go test ./...`
 
 ## Design
 Implementation with the [go-zero framework](https://github.com/zeromicro/go-zero) and PostgreSQL.
