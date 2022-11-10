@@ -1,9 +1,9 @@
 FROM scratch
 
-WORKDIR /
-ADD ["api", "/app/api.bin"]
-ADD ["sql", "/app/sql/"]
-ADD ["etc", "/app/etc/"]
+WORKDIR /app
+ADD ["api", "./api.bin"]
+ADD ["sql", "./sql/"]
+ADD ["etc", "./etc/"]
 EXPOSE 8888/tcp
 
-ENTRYPOINT ["/app/api.bin"]
+CMD ["./api.bin"]
