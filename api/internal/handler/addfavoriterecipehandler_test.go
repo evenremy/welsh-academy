@@ -14,6 +14,7 @@ import (
 
 func TestAddFavoriteRecipeHandlerErrors(t *testing.T) {
 	testApi := tdhttp.NewTestAPI(t, AddFavoriteRecipeHandler(testCtx))
+	testApi.Name("Add favorite : Not existing user should be rejected")
 	body := &types.FavReq{
 		UserId:   999999,
 		RecipeId: 99999,
@@ -28,10 +29,11 @@ func TestAddFavoriteRecipeHandlerErrors(t *testing.T) {
 `))
 }
 
-func TestAddFavoriteRecipeHandlerExistingUser(t *testing.T) {
+func TestAddFavoriteRecipeHandlerNotExistingUser(t *testing.T) {
 	userId := createOrGetAbcUserId(t)
 
 	testApi := tdhttp.NewTestAPI(t, AddFavoriteRecipeHandler(testCtx))
+	testApi.Name("Add favorite : Not existing recipe should be rejected")
 	body := &types.FavReq{
 		UserId:   userId,
 		RecipeId: 999999,
@@ -64,6 +66,7 @@ func TestAddFavoriteRecipeHandlerWorking(t *testing.T) {
 	}
 
 	testApi := tdhttp.NewTestAPI(t, AddFavoriteRecipeHandler(testCtx))
+	testApi.Name("Add favorite : With existing user and recipe, should succeed")
 	testApi.PostJSON("/favorite_recipe", body).
 		CmpStatus(http.StatusOK).
 		NoBody()
