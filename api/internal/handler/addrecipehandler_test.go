@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"api/model"
+	"context"
 	"github.com/maxatome/go-testdeep/helpers/tdhttp"
 	"github.com/maxatome/go-testdeep/td"
 	"net/http"
@@ -25,22 +27,60 @@ type stage struct {
 	Description string `json:"description"`
 }
 
-func TestAddRecipeHandlerAutoJson(t *testing.T) {
+func TestAddRecipeHandlerOk(t *testing.T) {
 	DeleteIngredients()
+	var recipeId int64
 	ingredientsId := AddSomeIngredients()
 	recipeBodyQuery := createRecipeAuto(ingredientsId[0:3], 6)
 
 	testApi := tdhttp.NewTestAPI(t, AddRecipeHandler(testCtx))
-	testApi.AutoDumpResponse()
-	testApi.PostJSON("/recipe", recipeBodyQuery).
-		Name("Add recipe").
+	testApi.AutoDumpResponse().
+		Name("AddRecipe : should succeed").
+		PostJSON("/recipe", recipeBodyQuery).
 		CmpStatus(http.StatusOK).
 		CmpJSONBody(td.JSON(`
 {
 	"title": "A Welsh recipe Auto",
 	"id":$id
 }
-`, td.Tag("id", td.Gt(0))))
+`, td.Tag("id", td.Catch(&recipeId, td.Gt(0)))))
+
+	// Check the number of created quantities and stages in the db
+	checkQuantitiesAndStages(t, recipeId, 3, 6)
+}
+
+func TestAddRecipeHandlerWithNoIngredientsAndStages(t *testing.T) {
+	recipeBodyQuery := createRecipeAuto([]int64{}, 0)
+	var recipeId int64
+
+	testApi := tdhttp.NewTestAPI(t, AddRecipeHandler(testCtx))
+	testApi.
+		AutoDumpResponse().
+		Name("AddRecipe : With No Ingredients And Stages").
+		PostJSON("/recipe", recipeBodyQuery).
+		CmpStatus(http.StatusOK).
+		CmpJSONBody(td.JSON(`
+{
+	"title": "A Welsh recipe Auto",
+	"id":$id
+}
+`, td.Tag("id", td.Catch(&recipeId, td.Gt(0)))))
+
+	checkQuantitiesAndStages(t, recipeId, 0, 0)
+}
+
+// checkQuantitiesAndStages check the number of quantities and stages in the db for given recipeId
+func checkQuantitiesAndStages(t *testing.T, recipeId int64, expectedQuantities int, expectedStages int) {
+	// Check that there is no quantity and stage row in the db
+	quantities, err := testCtx.QuantityModel.FindByRecipe(context.Background(), recipeId)
+	if (expectedQuantities == 0 && err != model.ErrNotFound && len(quantities) != 0) || len(quantities) != expectedQuantities {
+		t.Error("wrong number of quantities for the recipe", recipeId, "expected", expectedQuantities, "got", len(quantities), "error", err)
+	}
+
+	stages, err := testCtx.StageModel.FindByRecipe(context.Background(), recipeId)
+	if (expectedStages == 0 && err != model.ErrNotFound && len(stages) != 0) || len(stages) != expectedStages {
+		t.Error("wrong number of stages for the recipe", recipeId, "expected", expectedStages, "got", len(stages), "error", err)
+	}
 }
 
 func createRecipeAuto(listIngredientId []int64, stageSize int) *recipeReq {

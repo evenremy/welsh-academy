@@ -27,8 +27,8 @@ type (
 
 func (c customStagesModel) FindByRecipe(ctx context.Context, id int64) ([]Stages, error) {
 	var resp []Stages
-	query := fmt.Sprintf("select %s from %s where recipe = $1", stagesRows, c.table)
-	err := c.conn.QueryRowCtx(ctx, &resp, query, id)
+	query := fmt.Sprintf("select * from stages where recipe = $1")
+	err := c.conn.QueryRowsCtx(ctx, &resp, query, id)
 	switch err {
 	case nil:
 		return resp, nil
