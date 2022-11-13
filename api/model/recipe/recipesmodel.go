@@ -1,6 +1,7 @@
 package recipe
 
 import (
+	"api/model"
 	"context"
 	"database/sql"
 	"fmt"
@@ -19,6 +20,7 @@ type (
 		FindAll(ctx context.Context) ([]LiteRecipe, error)
 		FindFiltered(ctx context.Context, withIngredients []int64, withoutIngredients []int64) ([]LiteRecipe, error)
 		DeleteAllRecipes(ctx context.Context) (*sql.Result, error)
+		FindByTitle(ctx context.Context, title string) ([]LiteRecipe, error)
 	}
 
 	customRecipesModel struct {
@@ -34,6 +36,21 @@ type (
 		Title string `db:"title"`
 	}
 )
+
+func (c customRecipesModel) FindByTitle(ctx context.Context, title string) ([]LiteRecipe, error) {
+	query := "select * from recipes where title = $1"
+	var recipes []LiteRecipe
+	err := c.conn.QueryRowsCtx(ctx, &recipes, query, title)
+	switch err {
+	case nil:
+	case sqlx.ErrNotFound:
+		return nil, model.ErrNotFound
+	default:
+		return nil, err
+	}
+
+	return recipes, nil
+}
 
 func (c customRecipesModel) DeleteAllRecipes(ctx context.Context) (*sql.Result, error) {
 	//goland:noinspection SqlWithoutWhere

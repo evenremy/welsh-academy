@@ -69,6 +69,35 @@ func TestAddRecipeHandlerWithNoIngredientsAndStages(t *testing.T) {
 	checkQuantitiesAndStages(t, recipeId, 0, 0)
 }
 
+func TestAddRecipeHandlerWrongIngredient(t *testing.T) {
+	DeleteIngredients()
+	ingredientsId := AddSomeIngredients()
+
+	// Change one id in ingredientsId to be wrong
+	ingredientsId[3] = ingredientsId[len(ingredientsId)-1] + 100
+	recipeBodyQuery := createRecipeAuto(ingredientsId, 6)
+	recipeBodyQuery.Title = "Recipe with wrong ingredient"
+
+	testApi := tdhttp.NewTestAPI(t, AddRecipeHandler(testCtx))
+	testApi.
+		AutoDumpResponse().
+		Name("AddRecipe : With wrong ingredient").
+		PostJSON("/recipe", recipeBodyQuery).
+		CmpStatus(http.StatusNotAcceptable).
+		CmpJSONBody(td.JSON(`
+{
+	"Code": 55,
+	"msg": "Could not add this recipe, wrong ingredient"
+}
+`))
+
+	// The recipe should not be found in the db
+	recipes, err := testCtx.RecipeModel.FindByTitle(context.Background(), recipeBodyQuery.Title)
+	if err != model.ErrNotFound {
+		t.Error("Recipe should be found, got error :", err, "and found", len(recipes), "recipes")
+	}
+}
+
 // checkQuantitiesAndStages check the number of quantities and stages in the db for given recipeId
 func checkQuantitiesAndStages(t *testing.T, recipeId int64, expectedQuantities int, expectedStages int) {
 	// Check that there is no quantity and stage row in the db
@@ -83,6 +112,7 @@ func checkQuantitiesAndStages(t *testing.T, recipeId int64, expectedQuantities i
 	}
 }
 
+// createRecipeAuto returns a recipe struct valid for the API
 func createRecipeAuto(listIngredientId []int64, stageSize int) *recipeReq {
 	recipe := recipeReq{
 		Title:       "A Welsh recipe Auto",
