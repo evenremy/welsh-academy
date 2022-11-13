@@ -18,12 +18,19 @@ type (
 		stagesModel
 		InsertStageFixed(ctx context.Context, data *Stages) (sql.Result, error)
 		FindByRecipe(ctx context.Context, id int64) ([]Stages, error)
+		TransactInsert(ctx context.Context, session sqlx.Session, s *Stages) (sql.Result, error)
 	}
 
 	customStagesModel struct {
 		*defaultStagesModel
 	}
 )
+
+func (c customStagesModel) TransactInsert(ctx context.Context, session sqlx.Session, s *Stages) (sql.Result, error) {
+	query := fmt.Sprintf("insert into stages (recipe, \"order\", description) values ($1, $2, $3)")
+	ret, err := session.ExecCtx(ctx, query, s.Recipe, s.Order, s.Description)
+	return ret, err
+}
 
 func (c customStagesModel) FindByRecipe(ctx context.Context, id int64) ([]Stages, error) {
 	var resp []Stages

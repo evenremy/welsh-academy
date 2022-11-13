@@ -86,7 +86,7 @@ func TestAddRecipeHandlerWrongIngredient(t *testing.T) {
 		CmpStatus(http.StatusNotAcceptable).
 		CmpJSONBody(td.JSON(`
 {
-	"Code": 55,
+	"code": 55,
 	"msg": "Could not add this recipe, wrong ingredient"
 }
 `))
@@ -101,12 +101,12 @@ func TestAddRecipeHandlerWrongIngredient(t *testing.T) {
 // checkQuantitiesAndStages check the number of quantities and stages in the db for given recipeId
 func checkQuantitiesAndStages(t *testing.T, recipeId int64, expectedQuantities int, expectedStages int) {
 	// Check that there is no quantity and stage row in the db
-	quantities, err := testCtx.QuantityModel.FindByRecipe(context.Background(), recipeId)
+	quantities, err := testCtx.RecipeModel.QuantityModel().FindByRecipe(context.Background(), recipeId)
 	if (expectedQuantities == 0 && err != model.ErrNotFound && len(quantities) != 0) || len(quantities) != expectedQuantities {
 		t.Error("wrong number of quantities for the recipe", recipeId, "expected", expectedQuantities, "got", len(quantities), "error", err)
 	}
 
-	stages, err := testCtx.StageModel.FindByRecipe(context.Background(), recipeId)
+	stages, err := testCtx.RecipeModel.StageModel().FindByRecipe(context.Background(), recipeId)
 	if (expectedStages == 0 && err != model.ErrNotFound && len(stages) != 0) || len(stages) != expectedStages {
 		t.Error("wrong number of stages for the recipe", recipeId, "expected", expectedStages, "got", len(stages), "error", err)
 	}

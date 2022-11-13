@@ -1,11 +1,13 @@
 package logic
 
 import (
-	quantity2 "api/model/quantity"
+	"api/errorx"
 	"api/model/recipe"
-	stage2 "api/model/stage"
+	"api/model/recipe/quantity"
+	"api/model/recipe/stage"
 	"context"
 	"database/sql"
+	"net/http"
 
 	"api/internal/svc"
 	"api/internal/types"
@@ -40,22 +42,26 @@ func (l *AddRecipeLogic) AddRecipe(req *types.AddRecipeReq) (resp *types.AddReci
 		return nil, err
 	}
 
-	recipeId, err := l.svcCtx.RecipeModel.InsertReturningId(l.ctx, &newRecipe)
+	// Ingredients
+	newQuantities, err := l.quantitiesFromIngredients(req.IngredientList)
 	if err != nil {
-		l.Logger.Errorf("Error during insertion for Recipe : id = %d", recipeId)
 		return nil, err
 	}
 
 	// Stages
-	err = l.addStages(req.StageList, recipeId)
+	newStages, err := l.stagesFromStagesRequest(req.StageList)
 	if err != nil {
 		return nil, err
 	}
 
-	// Ingredients
-	err = l.addIngredients(req.IngredientList, recipeId)
-	if err != nil {
+	recipeId, err := l.svcCtx.RecipeModel.InsertReturningId(l.ctx, &newRecipe, newQuantities, newStages)
+	switch err.(type) {
+	case nil:
+	case errorx.ApiError:
 		return nil, err
+	default:
+		l.Logger.Errorf("Unknown Error during insertion for Recipe", newRecipe)
+		return nil, errorx.NewCodeError(45, "unable to add recipe, unknown error", http.StatusBadRequest)
 	}
 
 	reply := types.AddRecipeReply{
@@ -66,44 +72,35 @@ func (l *AddRecipeLogic) AddRecipe(req *types.AddRecipeReq) (resp *types.AddReci
 	return &reply, nil
 }
 
-func (l *AddRecipeLogic) addIngredients(ingredients []types.LinkIngredientWithQuantity, recipeId int64) error {
+func (l *AddRecipeLogic) quantitiesFromIngredients(ingredients []types.LinkIngredientWithQuantity) ([]quantity.Quantity, error) {
+	quantities := make([]quantity.Quantity, len(ingredients))
 	for i, ingredient := range ingredients {
-		newQuantity := quantity2.Quantity{
-			Recipe:     recipeId,
+		quantities[i] = quantity.Quantity{
 			Ingredient: ingredient.IngredientId,
 			Unit:       ingredient.Unit,
 			Quantity:   sql.NullFloat64{},
 		}
-		err := newQuantity.Quantity.Scan(ingredient.Quantity)
+		err := quantities[i].Quantity.Scan(ingredient.Quantity)
 		if err != nil {
-			return err
-		}
-		_, err = l.svcCtx.QuantityModel.Insert(l.ctx, &newQuantity)
-		if err != nil {
-			l.Logger.Errorf("Error during insertion in Quantity at %d/%d ingredients, for: %+v", i, len(ingredients), newQuantity)
-			return err
+			return nil, err
 		}
 	}
-	return nil
+
+	return quantities, nil
 }
 
-func (l *AddRecipeLogic) addStages(stages []types.Stage, recipeId int64) error {
-	for i, stage := range stages {
-		newStage := stage2.Stages{
-			Recipe:      recipeId,
-			Order:       int64(stage.Order),
+func (l *AddRecipeLogic) stagesFromStagesRequest(stagesReq []types.Stage) ([]stage.Stages, error) {
+	stageList := make([]stage.Stages, len(stagesReq))
+	for i, s := range stagesReq {
+		stageList[i] = stage.Stages{
+			Order:       int64(s.Order),
 			Description: sql.NullString{},
 		}
-		err := newStage.Description.Scan(stage.Description)
+		err := stageList[i].Description.Scan(s.Description)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
-		_, err = l.svcCtx.StageModel.InsertStageFixed(l.ctx, &newStage)
-		if err != nil {
-			l.Logger.Errorf("Error during insertion in Stages at %d/%d stages, for: %+v", i, len(stages), newStage)
-			return err
-		}
 	}
-	return nil
+	return stageList, nil
 }

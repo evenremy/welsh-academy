@@ -2,8 +2,8 @@ package handler
 
 import (
 	"api/internal/types"
-	"api/model/quantity"
 	"api/model/recipe"
+	"api/model/recipe/quantity"
 	"context"
 	"database/sql"
 	"github.com/maxatome/go-testdeep/helpers/tdhttp"
@@ -55,20 +55,19 @@ func TestGetFilteredRecipesHandler(t *testing.T) {
 }
 
 func addRecipe(ingredientsId []int64) int64 {
+	quantities := make([]quantity.Quantity, len(ingredientsId))
+	for i, igd := range ingredientsId {
+		quantities[i] = quantity.Quantity{
+			Ingredient: igd,
+			Unit:       "something",
+		}
+	}
+
 	recipeId, _ := testCtx.RecipeModel.InsertReturningId(context.Background(), &recipe.Recipes{
 		Title:       "Test recipe",
 		Description: sql.NullString{},
 		Owner:       sql.NullInt64{},
-	})
-
-	for _, id := range ingredientsId {
-		_, _ = testCtx.QuantityModel.Insert(context.Background(), &quantity.Quantity{
-			Recipe:     recipeId,
-			Ingredient: id,
-			Unit:       "cup",
-			Quantity:   sql.NullFloat64{},
-		})
-	}
+	}, quantities, nil)
 
 	return recipeId
 }

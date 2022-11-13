@@ -4,6 +4,7 @@ import (
 	"api/model"
 	"context"
 	"database/sql"
+	"fmt"
 	"github.com/zeromicro/go-zero/core/stores/sqlc"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
@@ -16,6 +17,7 @@ type (
 	QuantityModel interface {
 		quantityModel
 		FindByRecipe(ctx context.Context, recipeId int64) ([]QuantityWithName, error)
+		TransactInsert(ctx context.Context, session sqlx.Session, q *Quantity) (sql.Result, error)
 	}
 
 	customQuantityModel struct {
@@ -31,6 +33,12 @@ type (
 		Id             int64           `db:"id"`
 	}
 )
+
+func (c customQuantityModel) TransactInsert(ctx context.Context, session sqlx.Session, q *Quantity) (sql.Result, error) {
+	query := fmt.Sprintf("insert into quantity (recipe, ingredient, unit, quantity) values ($1, $2, $3, $4)")
+	ret, err := session.ExecCtx(ctx, query, q.Recipe, q.Ingredient, q.Unit, q.Quantity)
+	return ret, err
+}
 
 func (c customQuantityModel) FindByRecipe(ctx context.Context, recipeId int64) ([]QuantityWithName, error) {
 	var resp []QuantityWithName

@@ -1,8 +1,8 @@
 package logic
 
 import (
-	"api/model/quantity"
-	"api/model/stage"
+	"api/model/recipe/quantity"
+	"api/model/recipe/stage"
 	"context"
 
 	"api/internal/svc"
@@ -26,7 +26,7 @@ func NewGetRecipeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetReci
 }
 
 func (l *GetRecipeLogic) GetRecipe(req *types.RecipeReq) (resp *types.FullRecipeReply, err error) {
-	recipe, err := l.svcCtx.RecipeModel.FindOne(l.ctx, req.RecipeId)
+	recipe, quantities, stages, err := l.svcCtx.RecipeModel.FindFullRecipeById(l.ctx, req.RecipeId)
 	if err != nil {
 		return nil, err
 	}
@@ -38,16 +38,7 @@ func (l *GetRecipeLogic) GetRecipe(req *types.RecipeReq) (resp *types.FullRecipe
 		reply.Description = recipe.Description.String
 	}
 
-	quantities, err := l.svcCtx.QuantityModel.FindByRecipe(l.ctx, req.RecipeId)
-	if err != nil {
-		return nil, err
-	}
 	reply.IngredientList = getIngredientListFromModel(quantities)
-
-	stages, err := l.svcCtx.StageModel.FindByRecipe(l.ctx, req.RecipeId)
-	if err != nil {
-		return nil, err
-	}
 	reply.StageList = getStageListFromModel(stages)
 
 	return &reply, nil

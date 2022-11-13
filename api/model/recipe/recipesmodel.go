@@ -1,11 +1,16 @@
 package recipe
 
 import (
+	"api/errorx"
 	"api/model"
+	"api/model/recipe/quantity"
+	"api/model/recipe/stage"
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/lib/pq"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
+	"net/http"
 	"strings"
 )
 
@@ -16,15 +21,20 @@ type (
 	// and implement the added methods in customRecipesModel.
 	RecipesModel interface {
 		recipesModel
-		InsertReturningId(ctx context.Context, data *Recipes) (int64, error)
+		StageModel() stage.StagesModel
+		QuantityModel() quantity.QuantityModel
+		InsertReturningId(ctx context.Context, recipeData *Recipes, quantitiesData []quantity.Quantity, stagesDate []stage.Stages) (int64, error)
 		FindAll(ctx context.Context) ([]LiteRecipe, error)
 		FindFiltered(ctx context.Context, withIngredients []int64, withoutIngredients []int64) ([]LiteRecipe, error)
 		DeleteAllRecipes(ctx context.Context) (*sql.Result, error)
 		FindByTitle(ctx context.Context, title string) ([]LiteRecipe, error)
+		FindFullRecipeById(ctx context.Context, recipeId int64) (*Recipes, []quantity.QuantityWithName, []stage.Stages, error)
 	}
 
 	customRecipesModel struct {
 		*defaultRecipesModel
+		quantityModel quantity.QuantityModel
+		stagesModel   stage.StagesModel
 	}
 
 	returningId struct {
@@ -37,12 +47,42 @@ type (
 	}
 )
 
+func (c customRecipesModel) StageModel() stage.StagesModel {
+	return c.stagesModel
+}
+
+func (c customRecipesModel) QuantityModel() quantity.QuantityModel {
+	return c.quantityModel
+}
+
+func (c customRecipesModel) FindFullRecipeById(ctx context.Context, recipeId int64) (*Recipes, []quantity.QuantityWithName, []stage.Stages, error) {
+	recipe, err := c.FindOne(ctx, recipeId)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	quantities, err := c.quantityModel.FindByRecipe(ctx, recipeId)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	stages, err := c.stagesModel.FindByRecipe(ctx, recipeId)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	return recipe, quantities, stages, nil
+}
+
 func (c customRecipesModel) FindByTitle(ctx context.Context, title string) ([]LiteRecipe, error) {
 	query := "select * from recipes where title = $1"
 	var recipes []LiteRecipe
 	err := c.conn.QueryRowsCtx(ctx, &recipes, query, title)
 	switch err {
 	case nil:
+		if recipes == nil {
+			return nil, model.ErrNotFound
+		}
 	case sqlx.ErrNotFound:
 		return nil, model.ErrNotFound
 	default:
@@ -112,17 +152,60 @@ func (c customRecipesModel) FindAll(ctx context.Context) ([]LiteRecipe, error) {
 	return recipeList, nil
 }
 
-func (c customRecipesModel) InsertReturningId(ctx context.Context, data *Recipes) (int64, error) {
-	// TODO should add transaction management (and regroup quantity & stage insertion in one method)
-	var query = fmt.Sprintf("insert into %s (%s) values ($1, $2, $3) returning id", c.table, recipesRowsExpectAutoSet)
+// InsertReturningId do a transaction insertion of the recipe and the linked quantities and stages
+func (c customRecipesModel) InsertReturningId(ctx context.Context, recipeData *Recipes, quantitiesData []quantity.Quantity, stagesDate []stage.Stages) (int64, error) {
 	resp := returningId{}
-	err := c.conn.QueryRowCtx(ctx, &resp, query, data.Title, data.Description, data.Owner)
-	return resp.Id, err
+
+	// Start transaction
+	err := c.conn.TransactCtx(ctx, func(ctx context.Context, session sqlx.Session) error {
+		var query = fmt.Sprintf("insert into recipes (title, description, owner) values ($1, $2, $3) returning id")
+		err := session.QueryRowCtx(ctx, &resp, query, recipeData.Title, recipeData.Description, recipeData.Owner)
+		if err != nil {
+			return err
+		}
+
+		// Inserting quantities
+		for _, q := range quantitiesData {
+			q.Recipe = resp.Id
+			_, err := c.quantityModel.TransactInsert(ctx, session, &q)
+			switch e := err.(type) {
+			case *pq.Error:
+				switch e.Code {
+				case errorx.PgErrorCodeForeignKeyViolation:
+					return errorx.NewCodeError(55, "Could not add this recipe, wrong ingredient", http.StatusNotAcceptable)
+				default:
+					return e
+				}
+			default:
+				if e != nil {
+					return e
+				}
+			}
+		}
+
+		// Inserting stages
+		for _, s := range stagesDate {
+			s.Recipe = resp.Id
+			_, err := c.stagesModel.TransactInsert(ctx, session, &s)
+			if err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+	if err != nil {
+		return 0, err
+	}
+
+	return resp.Id, nil
 }
 
 // NewRecipesModel returns a model for the database table.
 func NewRecipesModel(conn sqlx.SqlConn) RecipesModel {
 	return &customRecipesModel{
 		defaultRecipesModel: newRecipesModel(conn),
+		quantityModel:       quantity.NewQuantityModel(conn),
+		stagesModel:         stage.NewStagesModel(conn),
 	}
 }

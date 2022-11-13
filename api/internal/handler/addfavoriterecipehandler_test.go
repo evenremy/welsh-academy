@@ -58,7 +58,7 @@ func TestAddFavoriteRecipeHandlerWorking(t *testing.T) {
 		Description: sql.NullString{},
 		Owner:       sql.NullInt64{},
 	}
-	recipeId, _ := testCtx.RecipeModel.InsertReturningId(context.Background(), recipeData)
+	recipeId, _ := testCtx.RecipeModel.InsertReturningId(context.Background(), recipeData, nil, nil)
 
 	body := &types.FavReq{
 		UserId:   userId,

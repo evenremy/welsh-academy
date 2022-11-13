@@ -4,9 +4,7 @@ import (
 	"api/internal/config"
 	"api/model/favorite"
 	"api/model/ingredient"
-	"api/model/quantity"
 	"api/model/recipe"
-	"api/model/stage"
 	"api/model/user"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/stores/postgres"
@@ -21,11 +19,10 @@ import (
 type ServiceContext struct {
 	Config          config.Config
 	IngredientModel ingredient.IngredientsModel
-	RecipeModel     recipe.RecipesModel
-	StageModel      stage.StagesModel
-	QuantityModel   quantity.QuantityModel
-	FavoriteModel   favorite.FavoritesModel
-	UserModel       user.UsersModel
+	// RecipeModel give access to stages and quantities models
+	RecipeModel   recipe.RecipesModel
+	FavoriteModel favorite.FavoritesModel
+	UserModel     user.UsersModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -41,8 +38,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Config:          c,
 		IngredientModel: ingredient.NewIngredientsModel(conn),
 		RecipeModel:     recipe.NewRecipesModel(conn),
-		StageModel:      stage.NewStagesModel(conn),
-		QuantityModel:   quantity.NewQuantityModel(conn),
 		FavoriteModel:   favorite.NewFavoritesModel(conn),
 		UserModel:       user.NewUsersModel(conn),
 	}
