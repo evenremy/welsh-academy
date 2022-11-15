@@ -1,7 +1,9 @@
 package logic
 
 import (
+	"api/errorx"
 	"context"
+	"net/http"
 
 	"api/internal/svc"
 	"api/internal/types"
@@ -24,6 +26,10 @@ func NewAddUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddUserLo
 }
 
 func (l *AddUserLogic) AddUser(req *types.AddUserReq) (resp *types.AddUserReply, err error) {
+	if req.Username == "" {
+		return nil, errorx.NewCodeError(10, "Bad username", http.StatusBadRequest)
+	}
+
 	var id int64
 	id, err = l.svcCtx.UserModel.InsertReturningId(l.ctx, req.Username, false)
 	if err != nil {
