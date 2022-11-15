@@ -9,7 +9,7 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func AddIngredientsHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func AddIngredientHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.AddIngredientReq
 		if err := httpx.Parse(r, &req); err != nil {
@@ -17,8 +17,8 @@ func AddIngredientsHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			return
 		}
 
-		l := logic.NewAddIngredientsLogic(r.Context(), svcCtx)
-		resp, err := l.AddIngredients(&req)
+		l := logic.NewAddIngredientLogic(r.Context(), svcCtx)
+		resp, err := l.AddIngredient(&req)
 		if err != nil {
 			httpx.Error(w, err)
 		} else {

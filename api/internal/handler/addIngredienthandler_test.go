@@ -24,7 +24,7 @@ func TestAddIngredient(t *testing.T) {
 	req.Header.Add("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
 
-	httpHandler := AddIngredientsHandler(testCtx)
+	httpHandler := AddIngredientHandler(testCtx)
 	httpHandler(rr, req)
 	if rr.Code != http.StatusOK {
 		t.Error(rr.Body)
@@ -36,7 +36,7 @@ func TestAddRejectSameNameIngredient(t *testing.T) {
 	dataReader := prepareFakeJson(&types.AddIngredientReq{})
 
 	req1, rr1 := prepareNewRequestAndResponder(TEST_METHOD, TEST_TARGET, dataReader)
-	testHandler := AddIngredientsHandler(testCtx)
+	testHandler := AddIngredientHandler(testCtx)
 	testHandler(rr1, req1) // first try should work
 	if rr1.Code != http.StatusOK {
 		t.Error(rr1.Body)

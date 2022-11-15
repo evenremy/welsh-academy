@@ -20,7 +20,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/ingredient",
-				Handler: AddIngredientsHandler(serverCtx),
+				Handler: AddIngredientHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
