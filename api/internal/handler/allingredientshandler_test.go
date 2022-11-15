@@ -49,7 +49,7 @@ func addNIngredients(n int) {
 		req.Header.Add("Content-Type", "application/json")
 		rr := httptest.NewRecorder()
 
-		httpHandler := AddIngredientsHandler(testCtx)
+		httpHandler := AddIngredientHandler(testCtx)
 		httpHandler(rr, req)
 	}
 }
