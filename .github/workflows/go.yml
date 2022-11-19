@@ -27,12 +27,8 @@ jobs:
     - name: Deploy DB from docker-compose
       run: docker-compose up --detach db
     
-    - name: Change the api conf
-      working-directory: api/etc/
-      run: cat welsh-academy-api.yaml | sed "s/@db/@localhost/" > welsh-academy-api.yaml ; cat welsh-academy-api.yaml
-
     - name: Test
-      run: cd api ; go test -v ./...
+      run: cd api ; go test -v ./... -args -f etc/local-dev.yaml
     
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.1
