@@ -13,7 +13,7 @@ import (
 // Give access to models/db
 var testCtx *svc.ServiceContext
 
-const TestConfigFilePath = "../../etc/welsh-academy-api.yaml"
+const TestConfigFilePath = "../../etc/local-dev.yaml"
 
 func init() {
 	// testCtx initialisation
