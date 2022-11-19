@@ -28,7 +28,9 @@ jobs:
       run: docker-compose up --detach db
     
     - name: Change the api conf
-      run: cat ./api/etc/welsh-academy-api.yaml | sed "s/@db/@localhost/" > ./api/etc/welsh-academy-api.yaml
+      working-directory: ./apt/etc/
+      run: cat welsh-academy-api.yaml | sed "s/@db/@localhost/" > welsh-academy-api.yaml ; cat welsh-academy-api.yaml
+      
 
     - name: Test
       run: cd api ; go test -v ./...
