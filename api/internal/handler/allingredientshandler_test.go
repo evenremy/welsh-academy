@@ -7,9 +7,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	_ "github.com/maxatome/go-testdeep/helpers/tdhttp"
-	_ "github.com/maxatome/go-testdeep/td"
 )
 
 func TestAllIngredientsHandler(t *testing.T) {
