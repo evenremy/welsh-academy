@@ -22,16 +22,17 @@ jobs:
         go-version: 1.19
 
     - name: Build
-      run: cd api ; go build -v welsh-academy.go
+      run: cd api ; go build -v welsh-academy.go -o api.bin
+        
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: build
+        path: api/api.bin
     
     - name: Deploy DB from docker-compose
       run: docker-compose up --detach db
     
     - name: Test
       run: cd api ; go test -v ./...
-    
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: build
-        path: api/api
+  
