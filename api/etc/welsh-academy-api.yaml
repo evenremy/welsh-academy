@@ -3,3 +3,4 @@ Host: 0.0.0.0
 Port: 8888
 Postgre:
   Datasource: "postgres://postgres:tobechanged@db:5432/postgres?sslmode=disable"
+  MigrationFolder: "sql"
