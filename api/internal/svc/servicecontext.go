@@ -30,7 +30,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	conn := postgres.New(c.Postgre.Datasource)
 
 	// DB automatic migration
-	if err := initDB(conn); err != nil {
+	if err := initDB(conn, c.Postgre.MigrationFolder); err != nil {
 		fmt.Println(err.Error())
 	}
 
@@ -46,14 +46,17 @@ func NewServiceContext(c config.Config) *ServiceContext {
 // Return an error if the migration fails.
 // Do not alter the db if the schema is up-to-date.
 // Based on the schema_migration table versus content of the sql folder.
-func initDB(conn sqlx.SqlConn) error {
+func initDB(conn sqlx.SqlConn, migrationFolder string) error {
 	db, err := conn.RawDB()
 	if err != nil {
 		return err
 	}
 	driver, err := postgresmigrate.WithInstance(db, &postgresmigrate.Config{})
+	if err != nil {
+		return err
+	}
 	m, err := migrate.NewWithDatabaseInstance(
-		"file://sql",
+		"file://" + migrationFolder,
 		"postgres", driver)
 	if err != nil {
 		return err

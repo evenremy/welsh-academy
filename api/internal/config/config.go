@@ -6,5 +6,6 @@ type Config struct {
 	rest.RestConf
 	Postgre struct {
 		Datasource string
+		MigrationFolder string
 	}
 }

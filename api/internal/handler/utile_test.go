@@ -14,6 +14,7 @@ import (
 var testCtx *svc.ServiceContext
 
 const TestConfigFilePath = "../../etc/local-dev.yaml"
+const migrationFolderPath =  "../../sql"
 
 func init() {
 	// testCtx initialisation
@@ -21,7 +22,9 @@ func init() {
 		return
 	}
 	c := config.Config{}
+	
 	conf.MustLoad(TestConfigFilePath, &c)
+	c.Postgre.MigrationFolder = migrationFolderPath
 	testCtx = svc.NewServiceContext(c)
 
 	// set error handler to test json error formatting
