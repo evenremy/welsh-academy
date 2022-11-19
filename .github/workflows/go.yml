@@ -25,7 +25,7 @@ jobs:
       run: cd api ; go build -v welsh-academy.go
     
     - name: Deploy DB from docker-compose
-      run: docker-compose up db -d
+      run: docker-compose up --detach db
     
     - name: Change the api conf
       run: cat ./api/etc/welsh-academy-api.yaml | sed "s/@db/@localhost/" > ./api/etc/welsh-academy-api.yaml
