@@ -22,10 +22,10 @@ jobs:
         go-version: 1.19
 
     - name: Build
-      run: cd api ; go build -v 
+      run: cd api ; go build -v welsh-academy.go
 
     - name: Test
-      run: cd api ; go test -v
+      run: cd api ; go test -v ./...
     
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.1
